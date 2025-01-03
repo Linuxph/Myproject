@@ -12,17 +12,11 @@ const App = () => {
     //bg-[#36C2CE]
     <div className="App h-screen w-full ">
       <Router>
-        <SignInOrNotContext>
-          <LogoutContextProvider>
-            <MovieIdContextProvider>
               <ToastContainer />
               <div className="p-5">
                 <Navbar />
               </div>
               <AnimatedRoutes />
-            </MovieIdContextProvider>
-          </LogoutContextProvider>
-        </SignInOrNotContext>
       </Router>
     </div>
   );
