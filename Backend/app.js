@@ -13,7 +13,7 @@ const cors = require('cors');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const rateLimiter = require('express-rate-limiter');
+const rateLimiter = require('express-rate-limit');
 
 
 
