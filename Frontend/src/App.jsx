@@ -2,10 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router } from "react-router-dom";
 import AnimatedRoutes from "./pages/AnimatedRoutes";
-import LogoutContextProvider from "./Context/LogoutContextProvider";
 import { ToastContainer } from "react-toastify";
-import SignInOrNotContext from "./Context/SignInOrNotProvider";
-import MovieIdContextProvider from "./Context/MovieIdContextProvider";
 
 const App = () => {
   return (
