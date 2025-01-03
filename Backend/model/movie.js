@@ -7,9 +7,7 @@ const mongo = require('mongoose');
         release_date:Date,
         ImageURL:String,
         Duration: Number,
-        genre:{
-            type:String,
-        },
+        genre:String,
         userRating:{
             type:String,
             rating:Number,

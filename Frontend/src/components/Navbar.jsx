@@ -1,26 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Img from "/LOGO.png";
-import LogoutContext from "../Context/LogoutContext";
-
-import axios from 'axios'
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SignInOrNotContext from "../Context/SignInOrNot";
+
 
 const Navbar = () => {
-  const {logout,setlogout } = useContext(LogoutContext);
-  const {setsignIn} = useContext(SignInOrNotContext); 
 
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/logout');
-      toast.success(response.data.message);
-      setlogout(false);
       localStorage.clear();
-      setsignIn(false);
       navigate('/login');
   } catch (error) {
       toast.error('Failed to log out');
@@ -29,6 +20,8 @@ const Navbar = () => {
 
   const [menu, setmenu] = useState(false);
   const [toggle, settoggle] = useState(false);
+
+  
   return (
     <div>
       <nav className="xl:flex md:flex lg:flex gap-5 items-center justify-between  p-2 pl-5 bg-black text-white backdrop-sepia-0 hidden rounded-full ">
@@ -46,7 +39,7 @@ const Navbar = () => {
           </div>
           
         </div>
-          { logout &&
+          { localStorage.getItem("logout") &&
           <div className="rounded-2xl hover:border-2 hover:border-white border-2 border-black p-2 cursor-pointer ">
             <button onClick={(e)=>{
               logoutHandler()
@@ -55,7 +48,8 @@ const Navbar = () => {
           }
         
       </nav>
-      <nav className="xl:hidden md:hidden lg:hidden gap-5 items-center p-2 bg-[#0F67B1]/40 backdrop-sepia-0 flex justify-between relative z-[999]">
+      {/* //bg-[#0F67B1]/40 */}
+      <nav className="xl:hidden md:hidden lg:hidden gap-5 items-center p-2 bg-black backdrop-sepia-0 flex justify-between relative z-[999]">
         <div>
           <Link to="/">
             <img src={Img} alt="LOGO" className="h-[4vh] " />
@@ -65,7 +59,7 @@ const Navbar = () => {
           <span
             className={`material-symbols-outlined ${
               toggle && `hidden`
-            } cursor-pointer`}
+            } cursor-pointer bg-white`}
             onClick={() => {
               setmenu(true), settoggle(true);
             }}
@@ -76,7 +70,7 @@ const Navbar = () => {
         <span
           className={`material-symbols-outlined ${
             toggle ? `block` : `hidden`
-          } cursor-pointer`}
+          } cursor-pointer bg-white`}
           onClick={() => {
             setmenu(false), settoggle(false);
           }}
@@ -86,19 +80,20 @@ const Navbar = () => {
         <div
           className={`menu ${
             menu ? `block` : "hidden"
-          } z-[999] absolute bg-[#ffffff] p-2 rounded-3xl right-[0%] top-[95%]`}
+          } transition ease-in-out delay-150 z-[999] absolute bg-[#000000] m-1 p-2 rounded-3xl right-[0%] top-[95%] w-full h-[28vh]  border-2 border-black` }
         >
-          <div>
+          <div className="p-5 active:bg-blue-900 rounded-3xl border-black bg-white border-2">
             <Link to="/latest">LATEST</Link>
           </div>
-          <div>
+          <div className="p-5 active:bg-blue-500 rounded-3xl border-black border-2 bg-white">
             <Link to="/rated">RATED</Link>
           </div>
-          <div>
-            <Link to="/cinemas">CINEMAS</Link>
+          <div className="p-5 active:bg-red-500 rounded-3xl border-black border-2 bg-white">
+            <button onClick={()=>{logoutHandler()}}>LOGOUT</button>
           </div>
         </div>
-        { logout && <div
+        {/* { logout && 
+        <div
           className={`bg-[#0F67B1] rounded-md p-1 font-bold text-white absolute top-[1600%] w-full  xl:hidden md:hidden lg:hidden flex justify-center`}
         >
           <button
@@ -113,7 +108,7 @@ const Navbar = () => {
           >
             Logout
           </button>
-        </div> }
+        </div> } */}
       </nav>
     </div>
   );

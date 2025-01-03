@@ -2,13 +2,29 @@ const { StatusCodes } = require('http-status-codes');
 const Seats = require('../model/seats');
 const Showtime = require('../model/showtime');
 
+const movie = require('../model/movie');
+const User = require('../model/user');
+const nodemailer = require('nodemailer');
 
 const getSeatsDetails = async (req,res,next) => {
     try{  
-      const {id: showtimeid }  = req.params;
-      const seat = await Seats.find({showtimeId: showtimeid})
+      const { id: showtimeid } = req.params;
+
+      // Fetch all seats
+      const allSeats = await Seats.find(); 
+
+      // Fetch the specific showtime
+      const showtime = await Showtime.findOne({ _id: showtimeid });
+
+      // Extract all booked seat IDs
+      const bookedSeatIds = showtime.bookedSeats.flatMap(booking => booking.seats);
+
       
-      res.status(StatusCodes.OK).json({seat});
+      // Filter available seats
+      const availableSeats = allSeats.filter(seat => !bookedSeatIds.includes(seat._id.toString()));
+
+      res.status(StatusCodes.OK).json({availableSeats});
+
       
     }catch(error){
       next(error);
@@ -17,54 +33,71 @@ const getSeatsDetails = async (req,res,next) => {
 
   
   
-const holdSeats = async (req, res) => {
-  const { selectedSeats } = req.body;
-  const showtimeId = req.params.id;
-
+const holdSeats = async (req, res, next) => {
+  const { SelectedSeatIds } = req.body;
+  const {showid:showtimeId,userid:userId} = req.params;
+  
   try {
-    // Mark the seats as temporarily held
-    await Seat.updateMany(
-      { _id: { $in: selectedSeats }, showtimeId, isAvailable: true },
-      { $set: { isAvailable: false, holdUntil: Date.now() + 15 * 60 * 1000 } } // Hold for 15 minutes
+
+    const updatedShowtime = await Showtime.updateOne(
+      {
+        _id: showtimeId,
+        "bookedSeats.user": userId // Check if the user already exists in bookedSeats
+      },
+      {
+        $addToSet: { "bookedSeats.$.seats": { $each: SelectedSeatIds } } // Add new seats, avoiding duplicates
+      }
     );
-    res.status(200).json({ message: "Seats temporarily held." });
+    
+    // If no entry exists for the user, create one
+    const newshowtime = await Showtime.updateOne(
+      {
+        _id: showtimeId,
+        "bookedSeats.user": { $ne: userId } // Check if the user does NOT exist
+      },
+      {
+        $push: { bookedSeats: { user: userId, seats: SelectedSeatIds } } // Add a new entry for the user
+      }
+    );
+
+    res.status(StatusCodes.OK).json({ message: "Seats temporarily held.", updatedShowtime, newshowtime });
   } catch (error) {
-    res.status(500).json({ message: "Error holding seats." });
+    next(error)
   }
 };
 
 
-// const updateSeats = async (req,res,next) => {
+const email = async (req,res,next) => {
+  const {user,data1} = req.body;
+  console.log(user);
+  try {
+    var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'manassinghgenai@gmail.com',
+            pass: process.env.App_Password,
+          }
+        });
+        
+        var mailOptions = {
+          from: 'Team MOVIEtIME',
+          to: `${user.email}`,
+          subject: 'ENJOY YOUR TIME WITH THIS MOVIE',
+          text: `This is the confirmation mail let you know that your tickets ${data1.length} for the showtime has been confirmed. `
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            res.status(StatusCodes.BAD_REQUEST).json({msg:"Something went wrong"});
+          } else {
+            res.status(StatusCodes.BAD_REQUEST).json({msg:`Email sent: ${info.response}`});
+          }
+        }); 
+      } catch (error) {
+        next(error)
+      }
 
-//       const { id: showtimeId } = req.params;
-//       const dataToBeUpdated = req.body;
-      
-//       try {
-//         // Find all seats for the given showtime
-//         const seats = await Seats.find({ showtimeId: showtimeId });
-      
-//         // Ensure seats were found
-//         if (!seats || seats.length === 0) {
-//           return res.status(404).json({ message: 'No seats found for this showtime' });
-//         }
-      
-//         // Use Promise.all to handle multiple updates in parallel
-//         const updatedSeats = await Promise.all(
-//           dataToBeUpdated.map(async (seat) => {
-//             return await Seats.findOneAndUpdate(
-//               { showtimeId: showtimeId, column: seat.column },  // Find based on showtime and column
-//               { isAvailable: false },  // Update isAvailable to false
-//               { new: true }  // Return the updated document
-//             );
-//           })
-//         );
-      
-//         res.status(StatusCodes.OK).json({ message: 'Seats updated successfully', updatedSeats });
-//       } catch (error) {
-//         next(error)
-//       }
-
-// }
+}
 
 const showtime = async (req, res, next) => {
     try {
@@ -75,18 +108,38 @@ const showtime = async (req, res, next) => {
         return res.status(404).json({ message: 'No showtimes found for the given movie' });
       }
       
-      const seats = await Seats.find({showtimeId: showtimes._id });
+      const movieData = await movie.find({_id: movieId });
 
 
-      res.status(StatusCodes.OK).json({ showtimes,seats });
+      res.status(StatusCodes.OK).json({ showtimes,movieData });
     } catch (error) {
       next(error);
     }
 };
 
 
+const bookedSeats = async (req, res, next) => {
+  try {
+    const {userid:userId,showid:showtimeId} = req.params;
+
+    const Data = await Showtime.findOne({_id:showtimeId,"bookedSeats.user":userId});
+
+    const seatInfo = Data.bookedSeats.find(seat => seat.user === userId);
+    
+    const seatsId = await Seats.find({_id: seatInfo.seats});
+    
+    const user = await User.findOne({_id:userId});
+
+    res.status(StatusCodes.OK).json({seatsId,user,Data});
+  }catch(error){
+    next(error);
+  }
+}
+
 module.exports = {
     getSeatsDetails,
     showtime,
     holdSeats,
+    bookedSeats,
+    email
 }

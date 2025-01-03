@@ -5,7 +5,8 @@ const showtimeSchema = new mongoose.Schema({
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
     price: { type: Number, required: true },
-    availableSeats: { type: Number, required: true },
+    date:String,
+    bookedSeats: [{user:String,seats:Array}]
 });
 
 module.exports = mongoose.model('Showtimes', showtimeSchema);

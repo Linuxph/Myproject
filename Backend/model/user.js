@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     phone_no:{
         type:Number,
         required: [true,'Phone number is neccessay.'],
+        maxlength:[10,'Please enter the valid phone number'],
         minlength:[10,'Please enter the valid phone number']
     },
   

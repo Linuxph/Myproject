@@ -1,12 +1,14 @@
 const User = require('../model/user');
+const Admin = require('../model/admin');
 const { StatusCodes } = require('http-status-codes');
 const UnauthenticatedError = require('../errors/unauthenticated');
 const {BadRequestError} = require('../errors');
 
+
+
 const signUp = async (req,res,next) => {
     try{
         const user = await User.create({ ...req.body });
-        // const token = user.createJWT();
         res.status(StatusCodes.CREATED).json({user});
     }catch(error){
         next(error);
@@ -16,56 +18,60 @@ const signUp = async (req,res,next) => {
 const login = async (req,res,next) => {
     try {    
         const {email,password} = req.body;
+
         if(!email || !password){
             throw new BadRequestError('Please provide email and password')
         }
         const user = await User.findOne({email});
         if(!user){
-            throw new UnauthenticatedError('The Entered credentials are invalid' );
+            res.status(StatusCodes.BAD_REQUEST).json({msg:'The entered credentials are invalid or you must sign up'})
         }
-        const passwordCompare = user.passwordCompare(password);
+        const passwordCompare = await user.passwordCompare(password);
+        
         if(!passwordCompare){
-            throw new UnauthenticatedError('Invalid Credentials')
+            res.status(StatusCodes.BAD_REQUEST).json({msg:'Invalid Credentials'})
         }
         const token = user.createJWT();
-        // req.session.user = user.name;
-        // const cookieOptions = {
-        //     expires:new Date(Date.now() + process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-        //     httpOnly:true,
-        // }
-        // res.cookie('token',token,cookieOptions);
-        // res.send(message)
-        res.status(StatusCodes.OK).json({user,token});
+        
+
+          
+        res.status(StatusCodes.OK).json({token,user,msg:"Login Successful"});
     }catch(error){
         next(error);
     }
 }
 
-const logout = async(req, res, next) => {
-    try{
-        res.clearCookie('token');
-        req.session.destroy();
-        res.status(200).send('Logged out');
-    }catch(error){
-        next(error);
-    }
-};
+// const logout = async(req, res, next) => {
+//     try{
+//         res.clearCookie('token');
+//         res.clearCookie('user');
+//         res.status(StatusCodes.OK).send('Logged out');
+
+//     }catch(error){
+//         next(error);
+//     }
+// };
 
 
 
 const adminLogin = async (req,res,next) => {
+
     try {
-        const {name,password,secret} = req.body;
-        if(!name || !password || !secret){
-        throw new BadRequestError('Please provide name or password')
+        const {email,secret} = req.body;
+        console.log(email,secret);
+        
+        if(!email || !secret){
+            throw new BadRequestError('Please provide email or secret')
         }
-        if(secret !== "MOVIEtIME"){
+        const admin = await Admin.findOne({email});
+
+        if(secret !== "MOVIEtIME"){    
             throw new UnauthenticatedError('The Key does not match');
         }
         
-        const user = await User.create({ ...req.body });
-        const token = user.createJWT();
-        res.status(StatusCodes.OK).json({user,token});
+        const token = admin.createJWT();
+        
+        res.status(StatusCodes.OK).json({admin,token});
     }catch(error){
         next(error);
     }
@@ -76,6 +82,6 @@ const adminLogin = async (req,res,next) => {
 module.exports = {
     signUp,
     login,
-    logout,
+    // logout,
     adminLogin
 }

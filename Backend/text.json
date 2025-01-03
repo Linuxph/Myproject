@@ -14,11 +14,6 @@
     { "row": "A", "column": 13, "isAvailable": true },
     { "row": "A", "column": 14, "isAvailable": true },
     { "row": "A", "column": 15, "isAvailable": true },
-    { "row": "A", "column": 16, "isAvailable": true },
-    { "row": "A", "column": 17, "isAvailable": true },
-    { "row": "A", "column": 18, "isAvailable": true },
-    { "row": "A", "column": 19, "isAvailable": true },
-    { "row": "A", "column": 20, "isAvailable": true },
   
     { "row": "B", "column": 1, "isAvailable": true },
     { "row": "B", "column": 2, "isAvailable": true },
@@ -35,11 +30,6 @@
     { "row": "B", "column": 13, "isAvailable": true },
     { "row": "B", "column": 14, "isAvailable": true },
     { "row": "B", "column": 15, "isAvailable": true },
-    { "row": "B", "column": 16, "isAvailable": true },
-    { "row": "B", "column": 17, "isAvailable": true },
-    { "row": "B", "column": 18, "isAvailable": true },
-    { "row": "B", "column": 19, "isAvailable": true },
-    { "row": "B", "column": 20, "isAvailable": true },
   
     { "row": "C", "column": 1, "isAvailable": true },
     { "row": "C", "column": 2, "isAvailable": true },
@@ -56,11 +46,6 @@
     { "row": "C", "column": 13, "isAvailable": true },
     { "row": "C", "column": 14, "isAvailable": true },
     { "row": "C", "column": 15, "isAvailable": true },
-    { "row": "C", "column": 16, "isAvailable": true },
-    { "row": "C", "column": 17, "isAvailable": true },
-    { "row": "C", "column": 18, "isAvailable": true },
-    { "row": "C", "column": 19, "isAvailable": true },
-    { "row": "C", "column": 20, "isAvailable": true },
   
     { "row": "D", "column": 1, "isAvailable": true },
     { "row": "D", "column": 2, "isAvailable": true },
@@ -77,11 +62,6 @@
     { "row": "D", "column": 13, "isAvailable": true },
     { "row": "D", "column": 14, "isAvailable": true },
     { "row": "D", "column": 15, "isAvailable": true },
-    { "row": "D", "column": 16, "isAvailable": true },
-    { "row": "D", "column": 17, "isAvailable": true },
-    { "row": "D", "column": 18, "isAvailable": true },
-    { "row": "D", "column": 19, "isAvailable": true },
-    { "row": "D", "column": 20, "isAvailable": true },
   
     { "row": "E", "column": 1, "isAvailable": true },
     { "row": "E", "column": 2, "isAvailable": true },
@@ -98,11 +78,6 @@
     { "row": "E", "column": 13, "isAvailable": true },
     { "row": "E", "column": 14, "isAvailable": true },
     { "row": "E", "column": 15, "isAvailable": true },
-    { "row": "E", "column": 16, "isAvailable": true },
-    { "row": "E", "column": 17, "isAvailable": true },
-    { "row": "E", "column": 18, "isAvailable": true },
-    { "row": "E", "column": 19, "isAvailable": true },
-    { "row": "E", "column": 20, "isAvailable": true },
   
     { "row": "F", "column": 1, "isAvailable": true },
     { "row": "F", "column": 2, "isAvailable": true },
@@ -119,6 +94,11 @@
     { "row": "F", "column": 13, "isAvailable": true },
     { "row": "F", "column": 14, "isAvailable": true },
     { "row": "F", "column": 15, "isAvailable": true },
+    { "row": "F", "column": 16, "isAvailable": true },
+    { "row": "F", "column": 17, "isAvailable": true },
+    { "row": "F", "column": 18, "isAvailable": true },
+    { "row": "F", "column": 19, "isAvailable": true },
+    { "row": "F", "column": 20, "isAvailable": true },
     
   
     { "row": "G", "column": 1, "isAvailable": true },
@@ -136,6 +116,11 @@
     { "row": "G", "column": 13, "isAvailable": true },
     { "row": "G", "column": 14, "isAvailable": true },
     { "row": "G", "column": 15, "isAvailable": true },
+    { "row": "G", "column": 16, "isAvailable": true },
+    { "row": "G", "column": 17, "isAvailable": true },
+    { "row": "G", "column": 18, "isAvailable": true },
+    { "row": "G", "column": 19, "isAvailable": true },
+    { "row": "G", "column": 20, "isAvailable": true },
   
   
     { "row": "H", "column": 1, "isAvailable": true },
@@ -153,6 +138,11 @@
     { "row": "H", "column": 13, "isAvailable": true },
     { "row": "H", "column": 14, "isAvailable": true },
     { "row": "H", "column": 15, "isAvailable": true },
+    { "row": "H", "column": 16, "isAvailable": true },
+    { "row": "H", "column": 17, "isAvailable": true },
+    { "row": "H", "column": 18, "isAvailable": true },
+    { "row": "H", "column": 19, "isAvailable": true },
+    { "row": "H", "column": 20, "isAvailable": true },
    
   
     { "row": "I", "column": 1, "isAvailable": true },
@@ -170,6 +160,11 @@
     { "row": "I", "column": 13, "isAvailable": true },
     { "row": "I", "column": 14, "isAvailable": true },
     { "row": "I", "column": 15, "isAvailable": true },
+    { "row": "I", "column": 16, "isAvailable": true },
+    { "row": "I", "column": 17, "isAvailable": true },
+    { "row": "I", "column": 18, "isAvailable": true },
+    { "row": "I", "column": 19, "isAvailable": true },
+    { "row": "I", "column": 20, "isAvailable": true },
     
   
     { "row": "J", "column": 1, "isAvailable": true },
@@ -186,7 +181,12 @@
     { "row": "J", "column": 12, "isAvailable": true },
     { "row": "J", "column": 13, "isAvailable": true },
     { "row": "J", "column": 14, "isAvailable": true },
-    { "row": "J", "column": 15, "isAvailable": true }
+    { "row": "J", "column": 15, "isAvailable": true },
+    { "row": "J", "column": 16, "isAvailable": true },
+    { "row": "J", "column": 17, "isAvailable": true },
+    { "row": "J", "column": 18, "isAvailable": true },
+    { "row": "J", "column": 19, "isAvailable": true },
+    { "row": "J", "column": 20, "isAvailable": true }
    
   ]
   
