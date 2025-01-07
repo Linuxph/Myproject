@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 const Showtime = () => {
     const [dataShowtimes, setdataShowtimes] = useState([])
     const [movie , setmovie] = useState();
@@ -25,7 +24,6 @@ const Showtime = () => {
             toast.error("Error fetching movies:", error);
         }
     };
-
       showtimeDetailsFetch();
     
     }, [])
@@ -57,5 +55,4 @@ const Showtime = () => {
     </div>
   )
 }
-
 export default Showtime

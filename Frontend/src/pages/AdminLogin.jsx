@@ -2,20 +2,14 @@ import React, {useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-
 const AdminLogin = () => {
-
   const navigat = useNavigate();
-
-
   const [first, setfirst] = useState({
     email:"",
     secret:""
   })
-
   const submitHandlr = async (e) => {
     e.preventDefault();
-
   
         const response = await fetch('/api/v1/adminLogin', {
           method:"POST",
@@ -37,7 +31,6 @@ const AdminLogin = () => {
               position: "top-center"
             });
           }
-
   }
   return (
     <div className="flex items-center justify-center h-[80vh] w-full px-5 sm:px-0">
@@ -47,7 +40,6 @@ const AdminLogin = () => {
           <p className="text-xl text-gray-600 text-center">Welcome Admin!</p>
             <form onSubmit={submitHandlr} method='post'>
           <div className="mt-4">
-
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email Address
             </label>
@@ -100,7 +92,6 @@ const AdminLogin = () => {
           </div>
           
             </form>
-
           <div className="mt-4 flex items-center w-full text-center">
             <Link
               to="/"
@@ -110,15 +101,10 @@ const AdminLogin = () => {
               <span className="text-blue-700"> Sign Up</span>
             </Link>
           </div>
-
-
         </div>
       </div>
     </div>
   
   )
 }
-
-
-
 export default AdminLogin

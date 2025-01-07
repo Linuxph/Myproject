@@ -12,8 +12,6 @@ import Final from './Final'
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminHome'
 import Pagination from '../components/Pagination'
-
-
 const AnimatedRoutes = () => {
     const location = useLocation();
   return (
@@ -30,10 +28,8 @@ const AnimatedRoutes = () => {
             <Route  path='/latest' element={<Latest/>}/>
             <Route  path='/rated' element={<Rated />}/>
             <Route path='/final' element={<Final/>} />
-
         </Routes>
     </AnimatePresence>
   )
 }
-
 export default AnimatedRoutes

@@ -1,15 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 const Movies = require("../model/movie");
 const Showtime = require("../model/showtime");
-
 const uploadAsAdmin = async (req, res, next) => {
-
   const { title, duration, description, release_date, rating,  genre, ImageURL} = req.body;
-
   try {
-
     const alreadyExists = await Movies.findOne({title:title});
-
     
     if(!alreadyExists){
       await Movies.create({
@@ -34,12 +29,10 @@ const uploadAsAdmin = async (req, res, next) => {
     next(error);
   }
 };
-
 const deleteMovie = async (req, res, next) => {
   try {
     const { remove } = req.body;
     const data = await Movies.deleteOne({ title: remove });
-
     res
       .status(StatusCodes.OK)
       .json({ data, msg: "Successfully removed the movie" });
@@ -47,28 +40,20 @@ const deleteMovie = async (req, res, next) => {
     next(error);
   }
 };
-
 const showtime = async (req, res, next) => {
   try {
     const { movieId, startTime, endTime, price, date } = req.body;
-
     const movieid = await Movies.findOne({ title: movieId });
-
     if (!movieid) {
       res.status(StatusCodes.BAD_REQUEST).json({ msg: "Movie not found" });
     }
-
     // try{
-
     //     const countShowtime = await Showtime.find({
     //         movie: movieId._id,
     //         date: date,
     //     })
-
     //     console.log(countShowtime);
-
     //     if(countShowtime.length < 3){
-
     //         await Showtime.create({
     //             movie: movieid._id,
     //             startTime: Date(startTime),
@@ -80,7 +65,6 @@ const showtime = async (req, res, next) => {
     // }catch(error){
     //     console.log(error);
     // }
-
     await Showtime.create({
       movie: movieid._id,
       startTime: Date(startTime),
@@ -95,21 +79,16 @@ const showtime = async (req, res, next) => {
     next();
   }
 };
-
 const deleteShowtime = async (req, res, next) => {
   try {
     const { showremove } = req.body;
-
     const id = await Movies.findOne({ title: showremove });
-
     if (!id) {
       res
         .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "The movie is already deleted" });
     }
-
     data = await Showtime.deleteOne({ movie: id._id });
-
     res
       .status(StatusCodes.OK)
       .json({ data, msg: "The Showtime was successfully deleted" });
@@ -117,7 +96,6 @@ const deleteShowtime = async (req, res, next) => {
     next();
   }
 };
-
 module.exports = {
   uploadAsAdmin,
   deleteMovie,

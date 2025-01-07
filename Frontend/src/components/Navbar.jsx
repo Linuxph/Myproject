@@ -3,12 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Img from "/LOGO.png";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
 const Navbar = () => {
-
   const navigate = useNavigate();
-
   const logoutHandler = async () => {
     try {
       localStorage.clear();
@@ -17,10 +13,8 @@ const Navbar = () => {
       toast.error('Failed to log out');
   }
 }
-
   const [menu, setmenu] = useState(false);
   const [toggle, settoggle] = useState(false);
-
   
   return (
     <div>
@@ -113,5 +107,4 @@ const Navbar = () => {
     </div>
   );
 };
-
 export default Navbar;

@@ -1,13 +1,9 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
 const MoviesStructure = ({movies,dataimage}) => {
-
     const [selectedId, setSelectedId] = useState(null);
-
     const navigate = useNavigate();
-
     const handleClick = async (itemId) => {
         if(window.innerWidth > 640){
           setSelectedId(itemId === selectedId ? null : itemId);
@@ -27,7 +23,6 @@ const MoviesStructure = ({movies,dataimage}) => {
         //   console.error("Error fetching movies:", error);
         // }
     };
-
   return (
     <motion.div
       className=" w-full flex justify-center  "
@@ -68,9 +63,7 @@ const MoviesStructure = ({movies,dataimage}) => {
               <motion.h3>Rating: {movie.rating}</motion.h3>
               <motion.button onClick={() => { localStorage.setItem("movieId",movie._id); navigate('/showtime') }} className="bg-pink-500 border-2 text-white font-bold rounded-2xl p-1 relative bottom-0  md:hidden">Book </motion.button>
             </motion.div>
-
             
-
           ))
         ) :  (
           <motion.div
@@ -83,7 +76,6 @@ const MoviesStructure = ({movies,dataimage}) => {
             <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:4}} className="font-bold text-xl" ><p>Please <strong>Sign Up/Sign In</strong> first</p></motion.div>
           </motion.div>
         )}
-
         
         <AnimatePresence>
           {selectedId && (
@@ -163,7 +155,6 @@ const MoviesStructure = ({movies,dataimage}) => {
             </div>
           )}
         </AnimatePresence>
-
         <div className="flex justify-center w-full ">
           <div className="border-2 border-black p-1 p-x-2 cursor-pointer" onClick={()=>{navigate('/home')}}>1</div>
           <div className="border-2 border-black p-1 p-x-2 cursor-pointer" onClick={() => {navigate('/page1')}}>2</div>
@@ -173,5 +164,4 @@ const MoviesStructure = ({movies,dataimage}) => {
     </motion.div>
   )
 }
-
 export default MoviesStructure

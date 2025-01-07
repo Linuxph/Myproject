@@ -1,12 +1,8 @@
 import React, { useState } from 'react'
 import {motion} from 'framer-motion';
-
 const AdminPanel = (props) => {
-
     const [enable, setenable] = useState(false);
     const [color, setcolor] = useState(false);
-
-
   return (
     <div>
         <div
@@ -15,7 +11,6 @@ const AdminPanel = (props) => {
             setcolor(true);
           }}
           className="w-3/4 bg-green-300 rounded-2xl cursor-pointer p-2 mt-10 mb-10"
-
         >
           <h1
             className={`cursor-pointer p-1 w-fit ${
@@ -65,5 +60,4 @@ const AdminPanel = (props) => {
     </div>
   )
 }
-
 export default AdminPanel

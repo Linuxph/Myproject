@@ -1,23 +1,16 @@
 import React, {  useState, useEffect } from "react";
-
 import {toast} from 'react-toastify';
 import MoviesStructure from "../components/MoviesStructure";
-
 const Home = () => {
-
   const [movies, setmovies] = useState([]);
-
   // const [rating, setrating] = useState(0);
   // const [maxrating, setmaxrating] = useState(5);
   // const [rated, setrated] = useState(0);
-
   // const handleRating = (index) => {
   //   if(rating > 0){
   //     setrated(index+1);
-
   //   }
   // }
-
   useEffect(() => {
     
     const fetchMovies = async () => {
@@ -31,20 +24,15 @@ const Home = () => {
         const data = await response.json();
         setmovies(data.movies || []);
       
-
       } catch (error) {
         toast.error("Error fetching movies:", error);
       }
     };
-
     fetchMovies();
   
   }, []);
-
-
   return (
     <MoviesStructure movies={movies} />
   );
 };
-
 export default Home;

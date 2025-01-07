@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MoviesStructure from "../components/MoviesStructure";
-
-
 const Latest = () => {
-
   const [movies, setMovies] = useState([]);
-
-
   useEffect(() => {
     
       const fetchMovies = async () => {
@@ -22,15 +17,10 @@ const Latest = () => {
         }
       };
       fetchMovies();
-
   }, []);
-
-
   return (
    <MoviesStructure movies={movies} />
   );
   
 };
-
-
 export default Latest;

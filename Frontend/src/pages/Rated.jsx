@@ -1,11 +1,7 @@
 import React, {  useState, useEffect } from "react";
 import MoviesStructure from "../components/MoviesStructure";
-
-
 const Rated = () => {
-
   const [movies, setMovies] = useState([]);
-
   useEffect(() => {
     
       const fetchMovies = async () => {
@@ -21,14 +17,10 @@ const Rated = () => {
         }
       };
       fetchMovies();
-
   }, []);
-
   return (
     <MoviesStructure movies={movies} />
   );
   
 };
-
-
 export default Rated;

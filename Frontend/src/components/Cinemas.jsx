@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-
 const Latest = () => {
   return (
     <motion.div
@@ -29,5 +28,4 @@ const Latest = () => {
     </motion.div>
   );
 };
-
 export default Latest;

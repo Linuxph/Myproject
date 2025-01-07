@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 // import Ticket from '/imageTicket.jpg'
-
 import { toast } from "react-toastify";
 const Final = () => {
   const [data1, setdata1] = useState([]);
@@ -10,10 +9,7 @@ const Final = () => {
   const [price, setprice] = useState(0);
   const [confirm, setconfirm] = useState(false)
   const [user, setuser] = useState({})
-
   const [check, setcheck] = useState(false);
-
-
   useEffect(() => {
     const getBookedSeatData = async () => {
       try {
@@ -28,30 +24,24 @@ const Final = () => {
             },
           }
         );
-
         if (!dataForSeat) {
           toast.error("Something went wrong please try again");
         }
         const data = await dataForSeat.json();
-
         setdata1(data.seatsId || []);
         setname(data.user.name);
         setemail(data.user.email);
         setno(data.user.phone_no);
         setprice(data.Data.price);
         setuser(data.user);
-
         toast.success("Please complete the booking by clicking on the button");
       } catch (error) {
         toast.error(error);
       }
     };
-
     getBookedSeatData();
   }, []);
-
   const clickhandler = async () => {
-
     if (check !== true) {
       toast.error("please agree first");
     }
@@ -66,17 +56,14 @@ const Final = () => {
           body: JSON.stringify({user,data1})
           
         });
-
         toast.success('Successfully booked the tickets');
         setTimeout(()=>setconfirm(true), 2000);
         setcheck(false);
-
       } catch (error) {
         toast.error(error);
       }
     }
   };
-
   return (
     <div className="w-full fixed ">
       <div className={`bg-black/40 w-full h-screen z-[999] backdrop-blur-sm absolute ${confirm ? 'block' : 'hidden'}`}>
@@ -91,7 +78,6 @@ const Final = () => {
           <h1 className="text-xl font-bold">Your seats:</h1>{" "}
           <h1 className="text-lg "> {data1.length}</h1>
         </div>
-
         <div className="flex flex-wrap gap-2 mt-2">
           <h1 className="pr-2 text-xl font-bold">Seats:</h1>
           {data1.map((seat, index) => {
@@ -151,5 +137,4 @@ const Final = () => {
     </div>
   );
 };
-
 export default Final;
