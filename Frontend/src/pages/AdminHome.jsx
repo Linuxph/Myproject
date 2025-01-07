@@ -131,7 +131,6 @@ const AdminHome = () => {
 
   const removeFunction = async (e) => {
     e.preventDefault();
-    console.log(remove);
     try {
       await fetch(`http://localhost:3000/api/v1/remove`, {
         method: "DELETE",

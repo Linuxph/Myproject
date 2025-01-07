@@ -13,9 +13,11 @@ const cors = require('cors');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const rateLimiter = require('export default first');
+const rateLimiter = require('express-rate-limit');
+const path = require('path');
 
 
+const _dirname = path.resolve();
 
 //middleware
 app.set('trust proxy',1);
@@ -38,6 +40,12 @@ app.use('/api/v1',auth,adminRoute);
 app.use('/api/v1',auth,movieRoute);
 app.use('/api/v1',auth,bookingRoute);
 
+app.use(express.static(path.join(_dirname,"/Frontend/dist")));
+
+app.use('*',(_,res)=>{
+    res.sendFile(path.resolve(_dirname,"Frontend", "dist", "index.html"));
+})
+
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
@@ -48,10 +56,10 @@ const start = async () => {
     try {
         await connect(process.env.MONGO_URL)
         app.listen(port , ()=>{
-            
+            console.log(`CONNECTED TO THE DB ... AT PORT ${port}`);
         })
     } catch (error) {
-        res.send(error);
+        console.log(error);
     }
 }
 

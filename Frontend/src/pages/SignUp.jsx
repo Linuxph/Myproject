@@ -24,7 +24,6 @@ const SignUp = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(data.token);
 
       if (response.ok) {
         toast.success(" successfully registered!", {

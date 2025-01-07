@@ -21,7 +21,7 @@ useEffect(() => {
         },
       });
       const data = await response.json();
-      console.log(data);
+
       setmovies(data.movies || []);
 
     } catch (error) {

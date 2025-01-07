@@ -65,7 +65,6 @@ const Seats = () => {
       if (prevSelectedSeatIds.includes(seatid)) {
         return prevSelectedSeatIds.filter((seat) => seat !== seatid);
       } else {
-        console.log(seatid);
         return [...prevSelectedSeatIds, seatid];
       }
     });

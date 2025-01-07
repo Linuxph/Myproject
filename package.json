@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "nodemon app.js"
+    "dev": "nodemon Backend/app.js",
+    "build":"npm install && npm install --prefix Frontend && npm run build --prefix Frontend",
+    "start": "nodemon Backend/app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

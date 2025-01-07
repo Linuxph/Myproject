@@ -58,7 +58,7 @@ const adminLogin = async (req,res,next) => {
 
     try {
         const {email,secret} = req.body;
-        console.log(email,secret);
+        
         
         if(!email || !secret){
             throw new BadRequestError('Please provide email or secret')

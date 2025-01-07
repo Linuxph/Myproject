@@ -69,7 +69,7 @@ const holdSeats = async (req, res, next) => {
 
 const email = async (req,res,next) => {
   const {user,data1} = req.body;
-  console.log(user);
+  
   try {
     var transporter = nodemailer.createTransport({
           service: 'gmail',

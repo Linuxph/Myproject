@@ -24,7 +24,6 @@ const Login = () => {
         })
         const result = await  response.json();
         
-        
           if(!result.msg.includes("invalid") && !result.msg.includes("Invalid")){
             
             toast.success(result.msg);
