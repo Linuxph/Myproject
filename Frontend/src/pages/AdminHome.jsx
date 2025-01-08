@@ -66,7 +66,7 @@ const AdminHome = () => {
   const submitFunction = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:3000/api/v1/add", {
+      await fetch("/api/v1/add", {
         method: "POST",
         crossDomain: true,
         headers: {
@@ -105,7 +105,7 @@ const AdminHome = () => {
   const showTime_Submit = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:3000/api/v1/showtime", {
+      await fetch("/api/v1/showtime", {
         method: "POST",
         crossDomain: true,
         headers: {
@@ -132,7 +132,7 @@ const AdminHome = () => {
   const removeFunction = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:3000/api/v1/remove`, {
+      await fetch(`/api/v1/remove`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
