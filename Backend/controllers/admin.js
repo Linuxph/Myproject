@@ -1,12 +1,17 @@
 const { StatusCodes } = require("http-status-codes");
 const Movies = require("../model/movie");
 const Showtime = require("../model/showtime");
+
 const uploadAsAdmin = async (req, res, next) => {
-  const { title, duration, description, release_date, rating,  genre, ImageURL} = req.body;
+  const { title, duration, description, release_date, rating,  genre, image} = req.body;
+  
   try {
     const alreadyExists = await Movies.findOne({title:title});
     
     if(!alreadyExists){
+
+      const imageURL = `${process.env.URL}/uploads/${Date.now()}${image.name}`;
+
       await Movies.create({
           title: title,
           duration: duration,
@@ -14,7 +19,7 @@ const uploadAsAdmin = async (req, res, next) => {
           release_date: release_date,
           rating:rating,
           genre: genre,
-          ImageURL: ImageURL
+          ImageURL: imageURL
       });
   
   

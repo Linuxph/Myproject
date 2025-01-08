@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server:{
     proxy:{
-      '/api/v1':'https://movietime-para.onrender.com'
+      '/api/v1':'http://localhost:3000'
     }
   },
   plugins: [react()],
 })
+//https://movietime-para.onrender.com

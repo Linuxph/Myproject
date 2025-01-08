@@ -52,6 +52,7 @@ const AdminPanel = (props) => {
                     </div>
                   );
                 })}
+                {props.image && <div className='text-white md:text-xl text-md ml-2'><label>Image: </label><input type='file' accept='image/*' onChange={props.imageFunc} /></div>}
                 <button className="hover:bg-green-800 rounded-xl p-1 text-white" type="submit">Proceed</button>
               </form>
             </div>

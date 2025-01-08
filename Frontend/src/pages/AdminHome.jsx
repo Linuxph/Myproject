@@ -5,7 +5,8 @@ import AdminPanel from "../components/AdminPanel";
 const AdminHome = () => {
   const [remove, setremove] = useState("");
   const [showremove, setshowremove] = useState("");
-  
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   const [formData, setformData] = useState({
     title: "",
@@ -31,7 +32,6 @@ const AdminHome = () => {
     ["Release Date", "date", "release date", "release_date"],
     ["Duration", "text", "duration", "duration"],
     ["Genre", "text", "genres", "genre"],
-    ["Image", "text", "image link", "ImageURL"],
   ];
 
   let showtimeFrom = [
@@ -45,7 +45,6 @@ const AdminHome = () => {
   let deletemovieFrom = [["Title", "text", "title", "Title"]];
 
   let deleteShowtimeFrom = [["Title", "text", "title", "Title"]];
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,43 +62,55 @@ const AdminHome = () => {
     }));
   };
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    formData["ImageURL"] = previewUrl;
+
+  }
+
   const submitFunction = async (e) => {
     e.preventDefault();
+
+    const formData1 = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formData1.append(key, value);
+    });
+    formData1.append('image', selectedFile);
+    console.log(formData1);
+
     try {
       await fetch("/api/v1/add", {
         method: "POST",
-        crossDomain: true,
         headers: {
-          "Content-Type":"application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          Authorization:`Bearer ${localStorage.getItem('adminToken')}`,
         },
-        body: JSON.stringify(formData),
-      }).then((res) =>
-        res.json().then((data) => {
-  
-          if (data.msg.includes("successfully")) {
-            toast.success(data.msg);
-          } else {
-            toast.error(data.msg);
-          }
-        })
-      );
+        body: formData1,
+      })
+        // }
+        // try {
+        // await fetch("/api/v1/add", {
+        //   method: "POST",
+        //     crossDomain: true,
+        //     headers: {
+        //       "Content-Type":"application/json",
+        //       Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        //     },
+        //     body: JSON.stringify(formData),
+        // })
+        .then((res) =>
+          res.json().then((data) => {
+            if (data.msg.includes("successfully")) {
+              toast.success(data.msg);
+            } else {
+              toast.error(data.msg);
+            }
+          })
+        );
     } catch (error) {
       toast.error(error);
     }
-
-
-    // try {
-    //   await fetch("http://localhost:3000/api/v1/add",{
-    //     method:"POST",
-    //     headers:{
-    //       "Content-Type":"multerpart/formData",
-    //     },
-    //     body:JSON.stringify()
-    //   })
-    // } catch (error) {
-      
-    // }
   };
 
   const showTime_Submit = async (e) => {
@@ -141,8 +152,6 @@ const AdminHome = () => {
         body: JSON.stringify({ remove }),
       }).then((res) =>
         res.json().then((data) => {
-
-
           if (data.data.deletedCount == 0) {
             toast.error(
               "The movie can't be removed, please enter the valid movie name."
@@ -169,12 +178,11 @@ const AdminHome = () => {
         body: JSON.stringify({ showremove }),
       }).then((res) =>
         res.json().then((data) => {
-
-          if(data.msg.includes("deleted")){
+          if (data.msg.includes("deleted")) {
             toast.error("The Showtime is already deleted");
           }
 
-          if (data.data.deletedCount == 0 ) {
+          if (data.data.deletedCount == 0) {
             toast.error(
               "The showtime can't be removed, please enter the valid movie name."
             );
@@ -202,7 +210,8 @@ const AdminHome = () => {
           storeFunc={handleInputChange}
           buttFunc={submitFunction}
           buttonName={"Add Movie"}
-
+          image={true}
+          imageFunc={handleImage}
         />
         {/* <div
           onClick={() => {

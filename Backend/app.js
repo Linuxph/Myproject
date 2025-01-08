@@ -11,6 +11,7 @@ const connect = require('./DataBase/connectDB');
 const auth = require('./middleware/authentication')
 const cors = require('cors');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+const multer = require('multer');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
@@ -33,18 +34,32 @@ app.use(xss());
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
+// app.use('/uploads', express.static('uploads'));
 
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now()
+    cb(null,  uniqueSuffix+file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage });
+  
 //routes
 app.use('/api/v1',authRoute);
-app.use('/api/v1',auth,adminRoute);
+app.use('/api/v1',auth,upload.single('image'),adminRoute);
 app.use('/api/v1',auth,movieRoute);
 app.use('/api/v1',auth,bookingRoute);
 
-app.use(express.static(path.join(_dirname,"/Frontend/dist")));
+// app.use(express.static(path.join(_dirname,"/Frontend/dist")));
 
-app.use('*',(_,res)=>{
-    res.sendFile(path.resolve(_dirname,"Frontend", "dist", "index.html"));
-})
+// app.use('*',(_,res)=>{
+//     res.sendFile(path.resolve(_dirname,"Frontend", "dist", "index.html"));
+// })
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
