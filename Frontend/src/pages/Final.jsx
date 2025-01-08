@@ -14,7 +14,7 @@ const Final = () => {
     const getBookedSeatData = async () => {
       try {
         const dataForSeat = await fetch(
-          `http://localhost:3000/api/v1/booking/${localStorage.getItem(
+          `/api/v1/booking/${localStorage.getItem(
             "userId"
           )}/${localStorage.getItem("Showtime")}`,
           {
