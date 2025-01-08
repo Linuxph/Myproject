@@ -22,7 +22,7 @@ const Seats = () => {
     const seatdatafetch = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/booking/seats/${localStorage.getItem(
+          `/api/v1/booking/seats/${localStorage.getItem(
             "Showtime"
           )}`,
           {
