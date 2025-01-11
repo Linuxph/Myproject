@@ -57,11 +57,11 @@ app.use('/api/v1',auth,upload.single('image'),adminRoute);
 app.use('/api/v1',auth,movieRoute);
 app.use('/api/v1',auth,bookingRoute);
 
-// app.use(express.static(path.join(_dirname,"/Frontend/dist")));
+app.use(express.static(path.join(_dirname,"/Frontend/dist")));
 
-// app.use('*',(_,res)=>{
-//     res.sendFile(path.resolve(_dirname,"Frontend", "dist", "index.html"));
-// })
+app.use('*',(_,res)=>{
+    res.sendFile(path.resolve(_dirname,"Frontend", "dist", "index.html"));
+})
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
