@@ -1,7 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const Movies = require("../model/movie");
 const Rated = require("../model/rating");
-const {fetchImage} = require('../utils/cloudinary');
 
 
 const getAllMovies = async (req, res) => {

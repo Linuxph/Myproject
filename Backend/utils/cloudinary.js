@@ -1,4 +1,5 @@
 const v2 = require('cloudinary');
+const fs = require('fs');
 
 v2.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -13,26 +14,34 @@ const uploadImage = async (localPath, name) => {
             public_id: name,
             resource_type: "auto"
         });
-        console.log('Upload result:', uploadResult);
+        // console.log('Upload result:', uploadResult);
+        fs.unlinkSync(localPath, (err) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+        })
         return uploadResult;
     } catch (error) {
         console.error('Upload error:', error);
-        throw error;
+        fs.unlinkSync(localPath, (err) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+        })
+        
     }
 };
 
-const fetchImage = async (imageName) => {
+const DeleteImage = async (imageId) => {
     try {
-        const optimizeUrl = v2.url(imageName, {
-            fetch_format: 'auto',
-            quality: 'auto'
-        });
-        console.log('Optimized URL:', optimizeUrl);
-        return optimizeUrl;
+        const deleteData = await v2.uploader.destroy(imageId)
+        // console.log('deleted Data URL:', deleteData);
     } catch (error) {
-        console.error('Fetch image error:', error);
+        console.error('delete image error:', error);
         throw error;
     }
 };
 
-module.exports = { uploadImage, fetchImage };
+module.exports = { uploadImage, DeleteImage };

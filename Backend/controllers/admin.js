@@ -3,7 +3,7 @@ const Movies = require("../model/movie");
 const Showtime = require("../model/showtime");
 const fs = require('fs')
 const path = require('path');
-const {uploadImage} = require('../utils/cloudinary');
+const {uploadImage,DeleteImage} = require('../utils/cloudinary');
 
 
 
@@ -59,14 +59,10 @@ const deleteMovie = async (req, res, next) => {
       return res.status(StatusCodes.BAD_REQUEST).json({msg:"Please Delete the showtime first"});
     }
     
-    const path = `../uploads/${image.ImageURL.split('s/')[1]}`;
-    
-    fs.unlink(path, (err) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-    })
+    const arrayURL = image.ImageURL.split('/');
+    const pub_id = arrayURL[arrayURL.length - 1].split('.')[0];
+
+    DeleteImage(pub_id);
     
     const data = await Movies.deleteOne({ title: remove });
 

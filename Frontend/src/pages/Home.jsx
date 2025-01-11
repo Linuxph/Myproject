@@ -23,7 +23,6 @@ const Home = () => {
         });
         const data = await response.json();
         setmovies(data.movies || []);
-        console.log(data);
       
       } catch (error) {
         toast.error("Error fetching movies:", error);
