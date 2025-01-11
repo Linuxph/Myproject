@@ -58,7 +58,7 @@ const MoviesStructure = ({movies,dataimage}) => {
                 {movie.title}
               </motion.h2>
               <motion.h3 >
-                Release Date: {movie.release_date.split("T")[0]}
+                {/* Release Date: {movie.release_date.split("T")[0]} */}
               </motion.h3>
               <motion.h3>Rating: {movie.rating}</motion.h3>
               <motion.button onClick={() => { localStorage.setItem("movieId",movie._id); navigate('/showtime') }} className="bg-pink-500 border-2 text-white font-bold rounded-2xl p-1 relative bottom-0  md:hidden">Book </motion.button>

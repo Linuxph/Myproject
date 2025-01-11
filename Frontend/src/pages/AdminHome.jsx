@@ -143,27 +143,34 @@ const AdminHome = () => {
   const removeFunction = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`/api/v1/remove`, {
+      const response = await fetch(`/api/v1/remove`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
         },
         body: JSON.stringify({ remove }),
-      }).then((res) =>
-        res.json().then((data) => {
-          if (data.data.deletedCount == 0) {
-            toast.error(
-              "The movie can't be removed, please enter the valid movie name."
-            );
-          } else {
-            toast.success(`${data.msg}`);
-          }
-        })
-      );
+      });
+    
+      // Check if the response is not OK
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Something went wrong!");
+      }
+    
+      const data = await response.json();
+    
+      // Check the deletion count
+      if (data.data?.deletedCount === 0) {
+        toast.error("The movie can't be removed, please enter the valid movie name.");
+      } else {
+        toast.success(data.msg || "Movie removed successfully.");
+      }
     } catch (error) {
-      toast.error(error);
+      // Handle errors (e.g., network issues, server errors)
+      toast.error(error.message || "An unexpected error occurred.");
     }
+    
   };
 
   const removeShowtime = async (e) => {

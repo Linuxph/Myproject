@@ -26,7 +26,9 @@ app.use(rateLimiter({
   windowMs:15*60*1000, //15 minutes
   max:100,
 }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.URL,
+}));
 app.use(helmet());
 app.use(xss());
 
@@ -34,16 +36,16 @@ app.use(xss());
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
-// app.use('/uploads', express.static('uploads'));
 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads')
+    const uploadPath = path.join(__dirname, 'uploads');
+    cb(null, uploadPath)
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now()
-    cb(null,  uniqueSuffix+file.originalname)
+    
+    cb(null,  file.originalname)
   }
 })
 
