@@ -37,6 +37,14 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; img-src 'self' data: https://res.cloudinary.com;"
+  );
+  next();
+});
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

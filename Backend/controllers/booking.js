@@ -19,9 +19,9 @@ const getSeatsDetails = async (req,res,next) => {
       // Extract all booked seat IDs
       const bookedSeatIds = showtime.bookedSeats.flatMap(booking => booking.seats);
 
-      
       // Filter available seats
       const availableSeats = allSeats.filter(seat => !bookedSeatIds.includes(seat._id.toString()));
+      availableSeats.sort({row:1});
 
       res.status(StatusCodes.OK).json({availableSeats});
 
