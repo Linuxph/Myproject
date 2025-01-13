@@ -6,5 +6,10 @@ const seatSchema = new mongoose.Schema({
     isAvailable: { type: Boolean, default: true },
 });
 
+seatSchema.pre(/^find/, function (next) {
+    this.sort({ row: 1, column:1 }); // Default: Sort by releaseDate descending
+    next();
+  });
+
 module.exports = mongoose.model('Seats', seatSchema);
 
