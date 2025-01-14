@@ -22,7 +22,7 @@ const uploadAsAdmin = async (req, res, next) => {
 
       await Movies.create({
           title: title,
-          duration: duration,
+          Duration: duration,
           description: description,
           release_date: release_date,
           rating:rating,

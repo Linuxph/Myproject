@@ -9,7 +9,7 @@ const App = () => {
     <div className="App h-screen w-full ">
       <Router>
         <ToastContainer />
-        <div className="p-5">
+        <div className="p-3 bg-transparent">
         <Navbar />
         </div>
         <AnimatedRoutes />

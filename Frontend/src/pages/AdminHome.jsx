@@ -78,7 +78,6 @@ const AdminHome = () => {
       formData1.append(key, value);
     });
     formData1.append('image', selectedFile);
-    console.log(formData1);
 
     try {
       await fetch("/api/v1/add", {

@@ -114,7 +114,7 @@ const Seats = () => {
     <div className="fixed w-full">
       <div className="container mx-auto">
         {/* Stalls Section */}
-        <div className="stalls flex flex-wrap justify-center p-2 items-center gap-2">
+        <div className="stalls flex flex-wrap justify-center p-2 items-center md:gap-2 gap-5  scale-50 md:scale-100 ">
 
         {allRows.map((row) => {
           // Filter seats for the current row
@@ -127,7 +127,7 @@ const Seats = () => {
                   <div
                     key={`${row}-${index}`}
                     onClick={() => clickHandler(data.row, data.column)}
-                    className={`border-black border-2 rounded-lg cursor-pointer md:w-12 md:h-12 w-3 h-3 text-center ${
+                    className={`border-black border-2 rounded-lg cursor-pointer md:w-12 md:h-12 w-[5vw] h-[5vh] text-center ${
                       isSelected(data.row, data.column) && "bg-black text-white"
                       }`}
                   >

@@ -9,7 +9,7 @@ v2.config({
 
 const uploadImage = async (localPath, name) => {
     try {
-        console.log('File path:', localPath);
+        
         const uploadResult = await v2.uploader.upload(localPath, {
             public_id: name,
             resource_type: "auto"

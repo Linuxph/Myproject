@@ -33,8 +33,6 @@ const login = async (req,res,next) => {
         }
         const token = user.createJWT();
         
-
-          
         res.status(StatusCodes.OK).json({token,user,msg:"Login Successful"});
     }catch(error){
         next(error);
