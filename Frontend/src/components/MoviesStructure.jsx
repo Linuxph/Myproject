@@ -44,7 +44,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
       <div className=" w-[100%] flex flex-wrap flex-start gap-10 items-start p-5 justify-center md:justify-normal  h-[80vh] ">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <div className=" rounded-full border-2 border-black "
+            <div className=" rounded-full w-[35vw] text-center"
               
               key={movie._id}
               onMouseEnter={() => {
@@ -57,11 +57,16 @@ const MoviesStructure = ({ movies, dataimage }) => {
                   sethoverId(null);
                 }
               }}
-              onClick={() => {
+              // onClick={() => {
                 
-                if(window.innerWidth <= 640){
-                  sethoverId(movie._id);
-                }
+              //   if(window.innerWidth <= 640){
+              //     sethoverId(movie._id);
+
+              //   }
+              // }}
+              onClick={() => {
+                localStorage.setItem("movieId", movie._id);
+                navigate("/showtime");
               }}
             >
               {/* //h-[50%] xl:h-[70%] w-[100%]  */}
@@ -72,7 +77,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
                   backgroundSize: "cover", 
                   backgroundPosition: "center",
                 }}
-                whileTap={{scale:1.2}}
+                // whileTap={{scale:1.2}}
                 
                 className={` rounded-full w-[36vw] h-[16.5vh]   md:w-[17vw] md:h-[33vh]  border-2 md:border-2 border-black overflow-hidden rounded-3xl flex justify-center`}
               >
@@ -86,9 +91,9 @@ const MoviesStructure = ({ movies, dataimage }) => {
                     position: "unset",
                   }}
                   whileHover={{opacity:1,transition:{duration:1,ease:'easeIn'}}}
-                  whileTap={{opacity:1,transition:{duration:1,ease:'easeIn'}}}
+                  // whileTap={{opacity:1,transition:{duration:1,ease:'easeIn'}}}
                   //bg-[#088395]
-                  className={`movie-card rounded-full
+                  className={`movie-card hidden md:flex rounded-full
                   bg-black/70 text-white flex md:items-center justify-center text-center h-[40vh] md:h-[28vh] xl:h-[35vh] xl:w-[18vw] md:w-[25vw] w-[40vw] p-2   `}
                 >
                   <div>
@@ -113,6 +118,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
                 </motion.div>
                 }
               </motion.div>
+              <div className="Title font-bold">{movie.title}</div>
             </div>
           ))
         ) : (

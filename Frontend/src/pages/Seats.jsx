@@ -112,9 +112,9 @@ const Seats = () => {
 
   return (
     <div className="fixed w-full">
-      <div className="container mx-auto">
+      <div className="container mx-auto ">
         {/* Stalls Section */}
-        <div className="stalls flex flex-wrap justify-center p-2 items-center md:gap-2 gap-5  scale-50 md:scale-100 ">
+        <div className="stalls border-2 border-black flex flex-wrap justify-center p-2 items-center md:gap-2 gap-5  scale-50 md:scale-100 ">
 
         {allRows.map((row) => {
           // Filter seats for the current row
@@ -137,7 +137,7 @@ const Seats = () => {
                   </div>
                 ))
               ) : (
-                <div className="w-12 h-12 border-black border-2 bg-black" /> 
+                <div className="md:w-12 md:h-12 w-6 h-6 border-black border-2 bg-black" /> 
               )}
 
             </div>
@@ -149,17 +149,17 @@ const Seats = () => {
       </div>
 
       {/* Display selected seats */}
-      <div className="mt-4  text-center ">
+      <div className="md:mt-4  text-center text-sm">
         {selectedSeats.length > 0 ? (
           <div>
-            <h3 className="font-bold text-xl">Selected Seats:</h3>
+            <h3 className="font-semibold md:font-bold md:text-xl">Selected Seats:</h3>
             <div className="flex justify-center w-full p-2">
               {selectedSeats.map((seat) => {
                 const [rowIndex, colIndex] = seat.split("-");
                 return (
                   <div
                     key={seat}
-                    className="p-3 text-white bg-black rounded-full"
+                    className="p-1 md:p-3 text-white bg-black rounded-full"
                   >
                     <p>
                       {rowIndex}-{parseInt(colIndex) }
@@ -170,14 +170,14 @@ const Seats = () => {
             </div>
           </div>
         ) : (
-          <p className={`font-bold text-xl `}>No seats selected.</p>
+          <p className={`font-semibold md:font-bold  md:text-xl `}>No seats Available.</p>
         )}
       </div>
-      <div className="w-full flex justify-center  ">
+      <div className="w-full flex justify-center mb-4 ">
         <button
           className={`${
             book ? "block" : "hidden"
-          } bg-blue-700 text-center p-1   rounded-3xl`}
+          } bg-blue-700 text-center p-1 text-sm  rounded-3xl`}
           onClick={() => seatdataUpdate()}
         >
           BOOK

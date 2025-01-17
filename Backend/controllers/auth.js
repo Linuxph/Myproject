@@ -24,12 +24,12 @@ const login = async (req,res,next) => {
         }
         const user = await User.findOne({email});
         if(!user){
-            res.status(StatusCodes.BAD_REQUEST).json({msg:'The entered credentials are invalid or you must sign up'})
+            return res.status(StatusCodes.BAD_REQUEST).json({msg:'The entered credentials are invalid or you must sign up'})
         }
         const passwordCompare = await user.passwordCompare(password);
         
         if(!passwordCompare){
-            res.status(StatusCodes.BAD_REQUEST).json({msg:'Invalid Credentials'})
+            return res.status(StatusCodes.BAD_REQUEST).json({msg:'Invalid Credentials'})
         }
         const token = user.createJWT();
         
