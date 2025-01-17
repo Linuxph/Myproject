@@ -44,7 +44,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
       <div className=" w-[100%] flex flex-wrap flex-start gap-10 items-start p-5 justify-center md:justify-normal  h-[80vh] ">
         {movies.length > 0 ? (
           movies.map((movie) => (
-            <div className=" rounded-full w-[35vw] text-center"
+            <div className=" rounded-full w-[35vw] md:w-[17vw] text-center"
               
               key={movie._id}
               onMouseEnter={() => {
@@ -65,8 +65,10 @@ const MoviesStructure = ({ movies, dataimage }) => {
               //   }
               // }}
               onClick={() => {
-                localStorage.setItem("movieId", movie._id);
-                navigate("/showtime");
+                if(window.innerWidth <= 640){
+                  localStorage.setItem("movieId", movie._id);
+                  navigate("/showtime");
+                }
               }}
             >
               {/* //h-[50%] xl:h-[70%] w-[100%]  */}
@@ -118,7 +120,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
                 </motion.div>
                 }
               </motion.div>
-              <div className="Title font-bold">{movie.title}</div>
+              <div className="md:hidden Title font-bold">{movie.title}</div>
             </div>
           ))
         ) : (
@@ -232,7 +234,7 @@ const MoviesStructure = ({ movies, dataimage }) => {
           )}
         </AnimatePresence>
 
-        <div className="flex justify-center w-full hidden md:visible ">
+        <div className="flex justify-center w-full hidden md:flex ">
           <div
             className="border-2 border-black p-1 p-x-2 cursor-pointer"
             onClick={() => {
