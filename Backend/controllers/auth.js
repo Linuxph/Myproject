@@ -50,6 +50,51 @@ const login = async (req,res,next) => {
 //     }
 // };
 
+const forgetPassword = (req,res,next) => {
+    try{
+        let code = ''
+        for(let i=0;i<4;i++){
+            code += Math.floor(Math.random() * 10);
+        } 
+        res.status(OK).send(code);
+    }catch(error)
+    {
+        next(error);
+    }
+} 
+
+const resetPassword = async (req,res,next) => {
+    try{
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+          return res.status(400).json({ message: 'Email and OTP are required' });
+        }
+      
+        const otpEntry = await OTP.findOne({ email });
+      
+        if (!otpEntry) {
+          return res.status(404).json({ message: 'OTP not found' });
+        }
+      
+        if (otpEntry.expiresAt < new Date()) {
+          return res.status(400).json({ message: 'OTP expired' });
+        }
+      
+        if (otpEntry.code !== otp) {
+          return res.status(400).json({ message: 'Invalid OTP' });
+        }
+      
+        // Optional: delete OTP after successful verification
+        await OTP.deleteOne({ email });
+      
+        return res.status(200).json({ message: 'OTP verified successfully' });
+      }
+      catch(error){
+        next(error);
+      }
+      
+    }
 
 
 const adminLogin = async (req,res,next) => {

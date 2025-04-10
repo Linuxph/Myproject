@@ -12,6 +12,8 @@ import Final from './Final'
 import AdminLogin from './AdminLogin'
 import AdminHome from './AdminHome'
 import Pagination from '../components/Pagination'
+import Glass from '../pages/Glass'
+import ForgetPassword from './ForgetPassword'
 const AnimatedRoutes = () => {
     const location = useLocation();
   return (
@@ -19,7 +21,9 @@ const AnimatedRoutes = () => {
         <Routes location={location} key={location.pathname}>
             <Route  exact path='/' element={<SignUp/>}/>
             <Route path='/login' element={<Login/>}/> 
+            <Route path='/forgetPassword' element={<ForgetPassword/>}/> 
             <Route path='/adminLogin' element={<AdminLogin/>} />
+            <Route path='/glass' element={<Glass/>} />
             <Route path='/adminHome' element={<AdminHome/>} />
             <Route path='/home' element={<Home />}/>
             <Route path='/page1' element={<Pagination />}/>

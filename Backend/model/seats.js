@@ -7,7 +7,7 @@ const seatSchema = new mongoose.Schema({
 });
 
 seatSchema.pre(/^find/, function (next) {
-    this.sort({ row: 1, column:1 }); // Default: Sort by releaseDate descending
+    this.sort({ row: 1, column:1 }); 
     next();
   });
 

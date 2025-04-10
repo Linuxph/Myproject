@@ -34,7 +34,7 @@ const AdminLogin = () => {
   }
   return (
     <div className="flex items-center justify-center h-[80vh] w-full px-5 sm:px-0">
-      <div className="flex justify-center bg-white rounded-lg shadow-lg border overflow-hidden max-w-sm lg:max-w-4xl w-full">
+      <div className="flex justify-center rounded-lg shadow-lg border overflow-hidden max-w-sm lg:max-w-4xl w-full">
         
         <div className="w-full p-8 lg:w-1/2">
           <p className="text-xl text-gray-600 text-center">Welcome Admin!</p>
@@ -47,6 +47,7 @@ const AdminLogin = () => {
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="email"
               name='email'
+              placeholder='Enter your registered email'
               value={first.email}
               onChange={(e) => 
                 setfirst({
@@ -67,6 +68,7 @@ const AdminLogin = () => {
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="password"
               name='secret'
+              placeholder='Enter the secret key'
               value={first.secret}
               onChange={(e) => 
                 setfirst({

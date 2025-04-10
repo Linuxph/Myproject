@@ -42,7 +42,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-w-fit w-full max-h-fit  fixed px-5">
+    <div className="flex flex-col justify-center items-center min-w-fit w-full md:h-[80vh] h-screen  fixed px-5 bg-black">
       <div className=" flex flex-col items-end justify-start  overflow-hidden mb-2 xl:max-w-3xl w-full">
         <div className="flex">
           <h3 className="text-white">Dark Mode : &nbsp;</h3>

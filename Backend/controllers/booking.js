@@ -22,7 +22,7 @@ const getSeatsDetails = async (req,res,next) => {
       // Filter available seats
       const availableSeats = allSeats.filter(seat => !bookedSeatIds.includes(seat._id.toString()));
 
-      res.status(StatusCodes.OK).json({availableSeats});
+      res.status(StatusCodes.OK).json({availableSeats,showtime});
 
       
     }catch(error){

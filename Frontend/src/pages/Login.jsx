@@ -41,8 +41,8 @@ const Login = () => {
   }
   
   return (
-    <div className="flex items-center justify-center fixed w-full px-5 sm:px-0">
-      <div className="flex justify-center bg-white rounded-lg shadow-lg border overflow-hidden max-w-sm lg:max-w-4xl w-full">
+    <div className="flex items-center justify-center md:h-[80vh] h-screen fixed w-full px-5 sm:px-0 bg-black">
+      <div className="flex justify-center rounded-lg shadow-lg border overflow-hidden max-w-sm lg:max-w-4xl w-full">
         
         <div className="w-full p-8 lg:w-1/2">
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
@@ -56,6 +56,7 @@ const Login = () => {
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="email"
               name='email'
+              placeholder='Enter your registered email'
               value={first.email}
               onChange={(e) => 
                 setfirst({
@@ -76,6 +77,7 @@ const Login = () => {
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="password"
               name='password'
+              placeholder='Enter your password'
               value={first.password}
               onChange={(e) => 
                 setfirst({
@@ -85,12 +87,12 @@ const Login = () => {
               }      
               required             
               />
-            {/* <a
-              href="#"
+            <Link
+              to="/forgetPassword"
               className="text-xs text-gray-500 hover:text-gray-900 text-end w-full mt-2"
               >
               Forget Password?
-            </a> */}
+            </Link>
           </div>
           <div className="mt-8">
             <button 
