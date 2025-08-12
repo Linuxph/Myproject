@@ -7,7 +7,7 @@ import Mobile_nav from "./components/Mobile_nav";
 const App = () => {
   return (
     //bg-[#36C2CE]
-    <div className="App md:h-screen w-full bg-black ">
+    <div className="App md:h-screen w-full ">
       <div className="md:hidden">
         <Mobile_nav />
       </div>

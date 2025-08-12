@@ -22,6 +22,7 @@ const getSeatsDetails = async (req,res,next) => {
       // Filter available seats
       const availableSeats = allSeats.filter(seat => !bookedSeatIds.includes(seat._id.toString()));
 
+
       res.status(StatusCodes.OK).json({availableSeats,showtime});
 
       
@@ -35,6 +36,7 @@ const getSeatsDetails = async (req,res,next) => {
 const holdSeats = async (req, res, next) => {
   const { SelectedSeatIds } = req.body;
   const {showid:showtimeId,userid:userId} = req.params;
+
   
   try {
 
@@ -98,28 +100,11 @@ const email = async (req,res,next) => {
 
 }
 
-const showtime = async (req, res, next) => {
-    try {
-      const { id: movieId } = req.params; 
-      const showtimes = await Showtime.find({movie: movieId });
-
-      if (!showtimes || showtimes.length === 0) {
-        return res.status(404).json({ message: 'No showtimes found for the given movie' });
-      }
-      
-      const movieData = await movie.find({_id: movieId });
-
-
-      res.status(StatusCodes.OK).json({ showtimes,movieData });
-    } catch (error) {
-      next(error);
-    }
-};
-
-
 const bookedSeats = async (req, res, next) => {
   try {
     const {userid:userId,showid:showtimeId} = req.params;
+
+    const showtime = await Showtime.findOne({_id:showtimeId});
 
     const Data = await Showtime.findOne({_id:showtimeId,"bookedSeats.user":userId});
 
@@ -129,15 +114,20 @@ const bookedSeats = async (req, res, next) => {
     
     const user = await User.findOne({_id:userId});
 
-    res.status(StatusCodes.OK).json({seatsId,user,Data});
+    const movieData = await movie.findOne({_id:showtime.movie});
+
+    res.status(StatusCodes.OK).json({seatsId,user,movieData,showtime});
   }catch(error){
     next(error);
   }
 }
 
+
+
+
+
 module.exports = {
     getSeatsDetails,
-    showtime,
     holdSeats,
     bookedSeats,
     email

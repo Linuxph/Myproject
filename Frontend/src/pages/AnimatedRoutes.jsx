@@ -3,9 +3,7 @@ import {useLocation, Routes, Route} from 'react-router-dom'
 import Latest from './Latest'
 import Rated from './Rated'
 import Home from './Home'
-import SignUp from './SignUp'
 import { AnimatePresence } from 'framer-motion'
-import Login from './Login'
 import Showtime from './Showtime'
 import Seats from './Seats'
 import Final from './Final'
@@ -14,24 +12,27 @@ import AdminHome from './AdminHome'
 import Pagination from '../components/Pagination'
 import Glass from '../pages/Glass'
 import ForgetPassword from './ForgetPassword'
+import Movie from '../pages/Movie'
+import AuthPage from './AuthPath'
+
 const AnimatedRoutes = () => {
     const location = useLocation();
   return (
     <AnimatePresence>
         <Routes location={location} key={location.pathname}>
-            <Route  exact path='/' element={<SignUp/>}/>
-            <Route path='/login' element={<Login/>}/> 
+            <Route  exact path='/' element={<Home/>}/> 
+            <Route path='/auth' element={<AuthPage/>}/>
             <Route path='/forgetPassword' element={<ForgetPassword/>}/> 
             <Route path='/adminLogin' element={<AdminLogin/>} />
             <Route path='/glass' element={<Glass/>} />
             <Route path='/adminHome' element={<AdminHome/>} />
-            <Route path='/home' element={<Home />}/>
+            <Route path='/movie/:id' element={<Movie />}/>
             <Route path='/page1' element={<Pagination />}/>
-            <Route path='/showtime' element={<Showtime />}/>
-            <Route path='/booking' element={<Seats />} />
+            <Route path='/checkout' element={<Showtime />}/>
+            <Route path='/booking/:id' element={<Seats />} />
             <Route  path='/latest' element={<Latest/>}/>
             <Route  path='/rated' element={<Rated />}/>
-            <Route path='/final' element={<Final/>} />
+            <Route path='/confirmation' element={<Final/>} />
         </Routes>
     </AnimatePresence>
   )

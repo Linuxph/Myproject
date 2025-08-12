@@ -61,9 +61,9 @@ const upload = multer({ storage: storage });
   
 //routes
 app.use('/api/v1',authRoute);
-app.use('/api/v1',auth,upload.single('image'),adminRoute);
-app.use('/api/v1',auth,movieRoute);
+app.use('/api/v1',movieRoute);
 app.use('/api/v1',auth,bookingRoute);
+app.use('/api/v1',auth,upload.single('image'),adminRoute);
 
 app.use(express.static(path.join(_dirname,"/Frontend/dist")));
 

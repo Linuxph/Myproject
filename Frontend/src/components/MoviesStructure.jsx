@@ -4,13 +4,38 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Mobile_view_movieStructure from "./Mobile_view_movieStructure";
 import Slider from "./Slider";
+import { Badge } from "../../ui/Badge";
+import { Button } from "../../ui/Button";
+import { Star,Play } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const MoviesStructure = ({ movies }) => {
   const [selectedId, setSelectedId] = useState(null);
   const [isZoomingIn, setIsZoomingIn] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [searchQuery, setSearchQuery] = useState("")
 
   const [movieBackground, setmovieBackground] = useState("");
   const [data, setdata] = useState({});
+
+  const featuredMovies = movies.filter((movie) => movie.featured)
+  console.log(featuredMovies);
+  const filteredMovies = movies.filter((movie) => {
+    const matchesCategory = selectedCategory === "All" || movie.genre === selectedCategory
+    const matchesSearch = movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % featuredMovies.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [featuredMovies.length])
+  
+
 
   const navigate = useNavigate();
 
@@ -41,10 +66,65 @@ const MoviesStructure = ({ movies }) => {
 
   return (
     <>
-      <div className="md:fixed  w-full h-screen md:block hidden ">
+      <div className="  w-full h-screen md:block hidden ">
         <Navbar />
-        <div className="relative z-[99] h-screen   text-white ">
-          {/* <motion.div className="bg-black/20 h-1/2 w-1/2 rounded-xl">
+
+        {/* Hero Section */}
+      <section className="relative h-screen overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={featuredMovies[currentSlide]?.backdrop || "/placeholder.svg?height=600&width=1200"}
+            alt={featuredMovies[currentSlide]?.title || "Featured Movie"}
+            
+            className="object-cover"
+            
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-2xl space-y-6 animate-fade-in">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight">{featuredMovies[currentSlide]?.title}</h1>
+            <div className="flex items-center space-x-4 text-sm">
+              <Badge variant="secondary" className="bg-red-600 text-white">
+                {featuredMovies[currentSlide]?.genre}
+              </Badge>
+              <span className="flex items-center">
+                <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                {featuredMovies[currentSlide]?.rating}
+              </span>
+              <span>{featuredMovies[currentSlide]?.year}</span>
+              <span>{featuredMovies[currentSlide]?.duration}</span>
+            </div>
+            <p className="text-lg text-gray-300 leading-relaxed">{featuredMovies[currentSlide]?.description}</p>
+            <div className="flex space-x-4">
+              <Link href={`/movie/${featuredMovies[currentSlide]?.id}`}>
+                <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
+                  <Play className="w-5 h-5 mr-2" />
+                  Book Now
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" className="border-gray-600 text-white hover:bg-gray-800">
+                More Info
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide Navigation */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {featuredMovies.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? "bg-red-600" : "bg-gray-600"}`}
+            />
+          ))}
+        </div>
+      </section>
+
+        {/* <div className=" z-[99] h-screen   text-white ">
+          * <motion.div className="bg-black/20 h-1/2 w-1/2 rounded-xl">
             <motion.h1 className="md:text-3xl font-extrabold  p-5 ">
               {data.title}
             </motion.h1>
@@ -63,16 +143,16 @@ const MoviesStructure = ({ movies }) => {
             >
               Book
             </button>
-          </motion.div> */}
-          {/* <div
+          </motion.div> *
+          * <div
             className={`absolute bottom-0 right-0 flex  w-1/2 m-5  ${
               isZoomingIn && "animate-none"
             }`}
-          > */}
+          > *
           {movies.length > 0 ? (
             <div className=" w-full text-white">
               <div className="text-2xl font-bold p-1"> Popular Movies</div>
-              {/* <section className="popular-movies w-full overflow-x-auto whitespace-nowrap scroll-smooth ">
+              * <section className="popular-movies w-full overflow-x-auto whitespace-nowrap scroll-smooth ">
                 <div className="flex space-x-4 p-4">
                   {movies.length > 0 &&
                     movies.map((item, index) => {
@@ -96,7 +176,7 @@ const MoviesStructure = ({ movies }) => {
                       );
                     })}
                 </div>
-              </section> */}
+              </section> *
               <Slider movies={movies} />
               <div className="text-2xl font-bold p-1 ">Now in Cinemas</div>
               <section className="Now-cinemas w-full overflow-x-auto whitespace-nowrap scroll-smooth">
@@ -186,7 +266,7 @@ const MoviesStructure = ({ movies }) => {
             //       }
             //     }}
             //   >
-            //     {/* //h-[50%] xl:h-[70%] w-[100%]  */}
+            //     {/* //h-[50%] xl:h-[70%] w-[100%]  *
 
             //     <motion.div
             //       onClick={clickhandler}
@@ -234,7 +314,7 @@ const MoviesStructure = ({ movies }) => {
             //         </motion.button>
             //         </div>
             //         </motion.div>
-            //   } */}
+            //   } *
             //     </motion.div>
             //     <div className="md:hidden Title font-bold">{movie.title}</div>
             //   </div>
@@ -308,7 +388,7 @@ const MoviesStructure = ({ movies }) => {
                       Duration :
                       {movies.find((i) => i._id === selectedId).Duration} min
                     </motion.h2>
-                    {/* <motion.div>
+                    * <motion.div>
                     Want to rate :
                     <motion.div className="pb-2 flex gap-1">
                       {[...Array(maxrating)].map((_, index) => (
@@ -320,7 +400,7 @@ const MoviesStructure = ({ movies }) => {
                         />
                         ))}
                     </motion.div>
-                  </motion.div> */}
+                  </motion.div> *
                     <hr />
                     <motion.button
                       onClick={() => {
@@ -331,7 +411,7 @@ const MoviesStructure = ({ movies }) => {
                     >
                       Book Now !
                     </motion.button>
-                    {/* <motion.button className="bg-white font-bold text-black cursor-pointer rounded-xl p-2 m-5 ">Add to WatchList</motion.button> */}
+                    * <motion.button className="bg-white font-bold text-black cursor-pointer rounded-xl p-2 m-5 ">Add to WatchList</motion.button> *
                   </div>
                   <div
                     className="h-[50vh] w-[50vw] p-5"
@@ -343,11 +423,11 @@ const MoviesStructure = ({ movies }) => {
                       backgroundPosition: "top",
                     }}
                   >
-                    {/* <img
+                    * <img
                       className="h-3/4"
                       src={movies.find((i) => i._id === selectedId).ImageURL}
                       alt={movies.find((i) => i._id === selectedId).title}
-                    /> */}
+                    /> *
                   </div>
                 </motion.div>
               </div>
@@ -372,7 +452,7 @@ const MoviesStructure = ({ movies }) => {
               2
             </div>
           </div>
-          {/* </div> */}
+          </div> 
         </div>
 
         {/* <motion.div
@@ -392,12 +472,13 @@ const MoviesStructure = ({ movies }) => {
           }}
         >
           {/* flex flex-wrap flex-start gap-10 items-start p-5 justify-center md:justify-normal  
-        </motion.div>  */}
+        </motion.div>  
       </div>
 
-      {/*Mobile View*/}
+      *Mobile View*
       <div className="md:hidden">
         <Mobile_view_movieStructure movies={movies} />
+      </div> */}
       </div>
     </>
   );
