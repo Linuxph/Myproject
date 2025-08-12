@@ -5,7 +5,7 @@ import { Input } from "../../ui/Input";
 import { Label } from "../../ui/Label";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import { Separator } from "../../ui/Separator";
-import { Checkbox } from "../../ui/checkbox";
+import { Checkbox } from "../../ui/Checkbox";
 import { ArrowLeft, Shield, Users,  Clock } from "lucide-react";
 import { toast } from "react-toastify";
 
