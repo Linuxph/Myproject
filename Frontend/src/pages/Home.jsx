@@ -5,8 +5,7 @@ import Navbar from "../components/Navbar";
 import { Badge } from "../../ui/Badge";
 import { Button } from "../../ui/Button";
 import { Card, CardContent } from "../../ui/Card";
-import { Star,Play } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
 
 

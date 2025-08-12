@@ -1,23 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../../ui/Button";
-import { Card, CardContent } from "../../ui/Card";
+import {  useNavigate } from "react-router-dom";
+import { Card } from "../../ui/Card";
 import { Badge } from "../../ui/Badge";
 import { Separator } from "../../ui/Separator";
 import { toast } from "react-toastify";
 import {
     CheckCircle,
-    Download,
     Mail,
-    Share2,
     Calendar,
     MapPin,
     Clock,
     Users,
-    Ticket,
     QrCode,
     Star,
-    Home,
 } from "lucide-react";
 // html2canvas can be used for the download ticket functionality
 // import html2canvas from "html2canvas";

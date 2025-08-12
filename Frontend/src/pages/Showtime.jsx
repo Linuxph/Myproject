@@ -5,9 +5,8 @@ import { Input } from "../../ui/Input";
 import { Label } from "../../ui/Label";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/Card";
 import { Separator } from "../../ui/Separator";
-import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { Checkbox } from "../../ui/checkbox";
-import { ArrowLeft, CreditCard, Smartphone, Wallet, Shield, Users, MapPin, Clock } from "lucide-react";
+import { ArrowLeft, Shield, Users,  Clock } from "lucide-react";
 import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
