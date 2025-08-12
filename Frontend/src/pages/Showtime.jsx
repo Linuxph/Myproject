@@ -146,7 +146,7 @@ export default function CheckoutPage() {
                             <ArrowLeft className="w-5 h-5 mr-2" />
                             Back to Seats
                         </Link>
-                        <Link to="/" className="text-2xl font-bold text-red-600">CinemaFlix</Link>
+                        <Link to="/" className="text-2xl font-bold text-red-600">MOVIEtIME</Link>
                         <div className="text-sm text-gray-400">Step 2 of 2</div>
                     </div>
                 </div>
