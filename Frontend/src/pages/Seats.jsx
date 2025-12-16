@@ -1356,7 +1356,7 @@ const baseSeatLayout = [
 
 export default function BookingPage() {
     const navigate = useNavigate();
-    const [movieData, setMovieData] = useState(null); // Initialize with null to handle loading state
+    const [movieData, setMovieData] = useState(null); 
     const [seatLayout, setSeatLayout] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [apiAvailableSeats, setApiAvailableSeats] = useState([]);
@@ -1391,7 +1391,7 @@ export default function BookingPage() {
                 setApiAvailableSeats(data.availableSeats || []);
 
                 const availableSeatIds = new Set(
-                    data.availableSeats.map(seat => `${seat.row}-${seat.column}`)
+                    data.availableSeats.map(seat => `${seat.row}-${seat.column}`) || []
                 );
 
                 const initialLayout = baseSeatLayout.map(row => ({
@@ -1406,7 +1406,7 @@ export default function BookingPage() {
             } catch (error) {
                 toast.error(error.message || "Error fetching movie data.");
                 console.error("Error fetching movie data:", error);
-                navigate("/"); // Navigate away on error
+                navigate("/");
             } finally {
                 setLoading(false); // Stop loading
             }
@@ -1519,9 +1519,7 @@ export default function BookingPage() {
                     <div className="grid lg:grid-cols-3 gap-8">
                         <div className="lg:col-span-2">
                             <Card className="bg-gray-900 border-gray-800">
-                                {/* ... Seat Selection Legend ... */}
                                 <CardContent>
-                                    {/* ... Screen display ... */}
                                     <div className="space-y-3">
                                         {seatLayout.map((row) => (
                                             <div key={row.row} className="flex items-center justify-center space-x-2">
