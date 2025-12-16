@@ -1387,11 +1387,13 @@ export default function BookingPage() {
                 const data = await response.json();
                 
                 console.log("Fetched movie data:", data); 
+
                 setMovieData(data.showtime);
+                const seatsfromapi = data.availableSeats || [];
                 setApiAvailableSeats(data.availableSeats || []);
 
                 const availableSeatIds = new Set(
-                    data.availableSeats.map(seat => `${seat.row}-${seat.column}`) || []
+                    seatsfromapi.map(seat => `${seat.row}-${seat.column}`) || []
                 );
 
                 const initialLayout = baseSeatLayout.map(row => ({
@@ -1490,7 +1492,6 @@ export default function BookingPage() {
             <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
-                        {/* FIX: Dynamic link back to the specific movie page */}
                         <Link to={`/movie/${movieData?.movie}`} className="inline-flex items-center text-gray-400 hover:text-white transition-colors">
                             <ArrowLeft className="w-5 h-5 mr-2" />
                             Back to Movie
