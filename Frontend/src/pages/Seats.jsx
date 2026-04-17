@@ -1408,6 +1408,10 @@ export default function BookingPage() {
             } catch (error) {
                 toast.error( error.message || "Error fetching movie data.");
                 console.error("Error fetching movie data:", error);
+                if(error.code === 401) {
+                    toast.warning("Please log in to continue.");
+                    navigate("/auth");
+                }
                 navigate("/");
             } finally {
                 setLoading(false); // Stop loading
