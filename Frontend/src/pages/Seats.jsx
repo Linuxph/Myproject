@@ -1406,7 +1406,7 @@ export default function BookingPage() {
 
                 setSeatLayout(initialLayout);
             } catch (error) {
-                toast.error(error.message || "Error fetching movie data.");
+                toast.error( error.message || "Error fetching movie data.");
                 console.error("Error fetching movie data:", error);
                 navigate("/");
             } finally {

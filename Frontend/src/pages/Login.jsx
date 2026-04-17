@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux'
+import { login } from '../store/authSlice'
 
 
 
 const Login = () => {
   const navigat = useNavigate();
+  const dispatch = useDispatch();
 
   const [first, setfirst] = useState({
     email:"",
@@ -15,29 +18,41 @@ const Login = () => {
 
   const submitHandlr = async (e) => {
     e.preventDefault();
-        const response = await fetch('/api/v1/login', {
-          method:"POST",
-          headers:{
-            'Content-Type':'application/json'
-          },
-          body: JSON.stringify(first)
-        })
-        const result = await  response.json();
+    try {
+      const response = await fetch('/api/v1/login', {
+        method:"POST",
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify(first)
+      })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      if(!result.msg || (!result.msg.toLowerCase().includes("invalid") && !result.msg.toLowerCase().includes("invalid"))){
+        toast.success(result.msg || 'Login successful');
         
-          if(!result.msg.includes("invalid") && !result.msg.includes("Invalid")){
-            
-            toast.success(result.msg);
-            localStorage.setItem("usertoken",result.token);
-            localStorage.setItem("userId",result.user._id);
-            localStorage.setItem("logout",true);
-            navigat('/home')
-          }  
-          else{
-            toast.error(result.msg || 'Something went wrong please try again later.',{
-              position: "top-center"
-            });
-          }
-
+        dispatch(login({
+          token: result.token,
+          userId: result.user._id
+        }));
+        
+        localStorage.setItem("usertoken",result.token);
+        localStorage.setItem("userId",result.user._id);
+        localStorage.setItem("logout",true);
+        navigat('/')
+      }  
+      else{
+        toast.error(result.msg || 'Something went wrong please try again later.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Failed to connect. Please check your connection and try again.');
+    }
   }
   
   return (

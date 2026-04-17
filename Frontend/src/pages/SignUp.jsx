@@ -23,21 +23,24 @@ const SignUp = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (response.ok) {
-        toast.success(" successfully registered!", {
-          position: "top-center",
-        });
-        navigat(`/login`);
+        toast.success("Successfully registered!", {});
+        navigat(`/auth`);
       } else {
-        toast.error(data.msg || "Registration failed!", {
-          position: "top-center",
-        });
+        toast.error(data.msg || "Registration failed!", {});
       }
     } catch (error) {
-      seterrormessage("There was an error registering!");
+      console.error('Registration error:', error);
+      seterrormessage("There was an error registering! Please try again.");
       seterrorDiv(true);
+      toast.error("Failed to connect. Please check your connection.");
     }
   };
 

@@ -1,5 +1,6 @@
 const User = require('../model/user');
 const Admin = require('../model/admin');
+const OTP = require('../model/otp');
 const { StatusCodes } = require('http-status-codes');
 const UnauthenticatedError = require('../errors/unauthenticated');
 const {BadRequestError} = require('../errors');
@@ -56,7 +57,7 @@ const forgetPassword = (req,res,next) => {
         for(let i=0;i<4;i++){
             code += Math.floor(Math.random() * 10);
         } 
-        res.status(OK).send(code);
+        res.status(StatusCodes.OK).send(code);
     }catch(error)
     {
         next(error);
@@ -108,7 +109,11 @@ const adminLogin = async (req,res,next) => {
         }
         const admin = await Admin.findOne({email});
 
-        if(secret !== "MOVIEtIME"){    
+        if (!admin) {
+            throw new UnauthenticatedError('Admin not found');
+        }
+
+        if (secret !== process.env.ADMIN_SECRET) {
             throw new UnauthenticatedError('The Key does not match');
         }
         
@@ -125,6 +130,7 @@ const adminLogin = async (req,res,next) => {
 module.exports = {
     signUp,
     login,
-    // logout,
+    forgetPassword,
+    resetPassword,
     adminLogin
 }

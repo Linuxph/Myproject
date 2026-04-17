@@ -112,7 +112,7 @@ const showtime = async (req, res, next) => {
       .json({ msg: "The showtime has been created successfully" });
 
   } catch (error) {
-    next();
+    next(error);
   }
 };
 
@@ -126,13 +126,13 @@ const deleteShowtime = async (req, res, next) => {
         .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "The movie is already deleted" });
     }
-    data = await Showtime.deleteOne({ movie: id._id });
+    const data = await Showtime.deleteOne({ movie: id._id });
     res
       .status(StatusCodes.OK)
       .json({ data, msg: "The Showtime was successfully deleted" });
 
   } catch (error) {
-    next();
+    next(error);
   }
 };
 

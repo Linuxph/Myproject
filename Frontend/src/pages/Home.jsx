@@ -36,17 +36,28 @@ useEffect(() => {
     try {
       const res = await fetch("/api/v1/home", {
         method: "GET",
-      });          
-      const data = await res.json();              
-      setmovies( data.movies ?? []);
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      
+      if (isMounted) {
+        setmovies( data.movies ?? []);
+      }
     } catch (err) {
-      toast.error(`Could not load movies: ${err.message}`);
+      if (isMounted) {
+        console.error('Fetch error:', err);
+        toast.error(`Could not load movies. Please refresh the page.`);
+      }
     }
   })();
 
   return () => {
     isMounted = false;
-    abort.abort();       // cancel the request if the component unmounts
+    abort.abort();
   };
 }, []);
 

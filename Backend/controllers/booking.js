@@ -5,27 +5,36 @@ const Showtime = require('../model/showtime');
 const movie = require('../model/movie');
 const User = require('../model/user');
 const nodemailer = require('nodemailer');
+const redis = require('../utils/redis');
+
+const CACHE_TTL = 30;
 
 const getSeatsDetails = async (req,res,next) => {
     try{  
       const { id: showtimeid } = req.params;
+      const cacheKey = `seats:${showtimeid}`;
 
-      // Fetch all seats
-      const allSeats = await Seats.find(); 
+      const cachedData = await redis.get(cacheKey);
+      if (cachedData) {
+        return res.status(StatusCodes.OK).json(JSON.parse(cachedData));
+      }
 
-      // Fetch the specific showtime
       const showtime = await Showtime.findOne({ _id: showtimeid });
+      if (!showtime) {
+        return res.status(StatusCodes.NOT_FOUND).json({ msg: "Showtime not found" });
+      }
 
-      // Extract all booked seat IDs
       const bookedSeatIds = showtime.bookedSeats.flatMap(booking => booking.seats);
 
-      // Filter available seats
-      const availableSeats = allSeats.filter(seat => !bookedSeatIds.includes(seat._id.toString()));
+      const availableSeats = await Seats.find({ 
+        _id: { $nin: bookedSeatIds } 
+      });
 
-
-      res.status(StatusCodes.OK).json({availableSeats,showtime});
-
+      const response = {availableSeats, showtime};
       
+      await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(response));
+
+      res.status(StatusCodes.OK).json(response);
     }catch(error){
       next(error);
     }
@@ -35,33 +44,36 @@ const getSeatsDetails = async (req,res,next) => {
   
 const holdSeats = async (req, res, next) => {
   const { SelectedSeatIds } = req.body;
-  const {showid:showtimeId,userid:userId} = req.params;
+  const {showid:showtimeId, userid:userId} = req.params;
 
-  
   try {
+    const showtime = await Showtime.findOne({ _id: showtimeId });
+    if (!showtime) {
+      return res.status(StatusCodes.NOT_FOUND).json({ msg: "Showtime not found" });
+    }
 
-    const updatedShowtime = await Showtime.updateOne(
-      {
-        _id: showtimeId,
-        "bookedSeats.user": userId // Check if the user already exists in bookedSeats
-      },
-      {
-        $addToSet: { "bookedSeats.$.seats": { $each: SelectedSeatIds } } // Add new seats, avoiding duplicates
-      }
-    );
+    const existingUserEntry = showtime.bookedSeats.find(entry => entry.user === userId);
     
-    // If no entry exists for the user, create one
-    const newshowtime = await Showtime.updateOne(
-      {
-        _id: showtimeId,
-        "bookedSeats.user": { $ne: userId } // Check if the user does NOT exist
-      },
-      {
-        $push: { bookedSeats: { user: userId, seats: SelectedSeatIds } } // Add a new entry for the user
-      }
-    );
+    let updatedShowtime;
+    if (existingUserEntry) {
+      const combinedSeats = [...new Set([...existingUserEntry.seats, ...SelectedSeatIds])];
+      updatedShowtime = await Showtime.findOneAndUpdate(
+        { _id: showtimeId, "bookedSeats.user": userId },
+        { $set: { "bookedSeats.$.seats": combinedSeats } },
+        { new: true }
+      );
+    } else {
+      updatedShowtime = await Showtime.findOneAndUpdate(
+        { _id: showtimeId },
+        { $push: { bookedSeats: { user: userId, seats: SelectedSeatIds } } },
+        { new: true }
+      );
+    }
 
-    res.status(StatusCodes.OK).json({ message: "Seats temporarily held.", updatedShowtime, newshowtime });
+    const cacheKey = `seats:${showtimeId}`;
+    await redis.del(cacheKey);
+
+    res.status(StatusCodes.OK).json({ message: "Seats temporarily held.", updatedShowtime });
   } catch (error) {
     next(error)
   }
