@@ -15,6 +15,8 @@ import ForgetPassword from "./ForgetPassword";
 import Movie from "../pages/Movie";
 import AuthPage from "./AuthPath";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Profile from "./Profile";
+import { useSelector } from "react-redux";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -23,15 +25,14 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route exact path="/" element={<Home />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/adminLogin" element={<AdminLogin />} />
         <Route path="/glass" element={<Glass />} />
         <Route
           path="/adminHome"
           element={
-            <ProtectedRoute>
               <AdminHome />
-            </ProtectedRoute>
           }
         />
 
@@ -64,10 +65,10 @@ const AnimatedRoutes = () => {
         <Route path="/latest" element={<Latest />} />
         <Route path="/rated" element={<Rated />} />
         <Route
-          path="/confirmation"
+          path="/profile"
           element={
             <ProtectedRoute>
-              <Final />
+              <Profile />
             </ProtectedRoute>
           }
         />

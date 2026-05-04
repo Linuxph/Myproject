@@ -32,7 +32,8 @@ const SignUp = () => {
 
       if (response.ok) {
         toast.success("Successfully registered!", {});
-        navigat(`/auth`);
+        navigat(`/`);
+        toast.info("Please login to continue.", {});
       } else {
         toast.error(data.msg || "Registration failed!", {});
       }

@@ -98,6 +98,16 @@ const resetPassword = async (req,res,next) => {
     }
 
 
+const getMe = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.userId).select('-password');
+        if (!user) throw new UnauthenticatedError('User not found');
+        res.status(StatusCodes.OK).json({ user });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const adminLogin = async (req,res,next) => {
 
     try {
@@ -132,5 +142,6 @@ module.exports = {
     login,
     forgetPassword,
     resetPassword,
-    adminLogin
+    adminLogin,
+    getMe
 }

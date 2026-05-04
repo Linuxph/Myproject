@@ -13,7 +13,7 @@ const AdminHome = () => {
   });
 
   const [showtime, setshowtime] = useState({
-    movieId: "", startTime: 0, endTime: 0, price: 0, bookedSeats: [],
+    movieId: "", startTime: "", endTime: "", price: 0, date: "",
   });
 
   const movieForm = [
@@ -33,8 +33,8 @@ const AdminHome = () => {
     ["Date", "date", "date", "date"],
   ];
 
-  const deletemovieForm = [["Movie Title", "text", "movie title", "Title"]];
-  const deleteShowtimeForm = [["Movie Title", "text", "movie title", "Title"]];
+  const deletemovieForm = [["Movie Title", "text", "movie title", "remove"]];
+  const deleteShowtimeForm = [["Movie Title", "text", "movie title", "showremove"]];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "ioredis": "^5.10.1",
-    "node-cache": "^5.1.2"
+    "image-size": "^2.0.2"
   }
 }

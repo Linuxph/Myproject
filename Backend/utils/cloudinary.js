@@ -1,4 +1,4 @@
-const v2 = require('cloudinary');
+const { v2 } = require('cloudinary');
 const fs = require('fs');
 
 v2.config({
@@ -15,21 +15,11 @@ const uploadImage = async (localPath, name) => {
             resource_type: "auto"
         });
         // console.log('Upload result:', uploadResult);
-        fs.unlinkSync(localPath, (err) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-        })
+        fs.unlinkSync(localPath);
         return uploadResult;
     } catch (error) {
         console.error('Upload error:', error);
-        fs.unlinkSync(localPath, (err) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-        })
+        if (fs.existsSync(localPath)) fs.unlinkSync(localPath);
         
     }
 };

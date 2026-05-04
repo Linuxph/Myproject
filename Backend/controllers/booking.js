@@ -5,19 +5,10 @@ const Showtime = require('../model/showtime');
 const movie = require('../model/movie');
 const User = require('../model/user');
 const nodemailer = require('nodemailer');
-const redis = require('../utils/redis');
-
-const CACHE_TTL = 30;
 
 const getSeatsDetails = async (req,res,next) => {
     try{  
       const { id: showtimeid } = req.params;
-      const cacheKey = `seats:${showtimeid}`;
-
-      const cachedData = await redis.get(cacheKey);
-      if (cachedData) {
-        return res.status(StatusCodes.OK).json(JSON.parse(cachedData));
-      }
 
       const showtime = await Showtime.findOne({ _id: showtimeid });
       if (!showtime) {
@@ -30,55 +21,47 @@ const getSeatsDetails = async (req,res,next) => {
         _id: { $nin: bookedSeatIds } 
       });
 
-      const response = {availableSeats, showtime};
+       const response = {availableSeats, showtime};
       
-      await redis.setex(cacheKey, CACHE_TTL, JSON.stringify(response));
-
       res.status(StatusCodes.OK).json(response);
     }catch(error){
       next(error);
     }
-  }
+  };
 
-  
-  
-const holdSeats = async (req, res, next) => {
-  const { SelectedSeatIds } = req.body;
-  const {showid:showtimeId, userid:userId} = req.params;
+  const holdSeats = async (req, res, next) => {
+    const { SelectedSeatIds } = req.body;
+    const {showid:showtimeId, userid:userId} = req.params;
 
-  try {
-    const showtime = await Showtime.findOne({ _id: showtimeId });
-    if (!showtime) {
-      return res.status(StatusCodes.NOT_FOUND).json({ msg: "Showtime not found" });
+    try {
+      const showtime = await Showtime.findOne({ _id: showtimeId });
+      if (!showtime) {
+        return res.status(StatusCodes.NOT_FOUND).json({ msg: "Showtime not found" });
+      }
+
+      const existingUserEntry = showtime.bookedSeats.find(entry => entry.user === userId);
+      
+      let updatedShowtime;
+      if (existingUserEntry) {
+        const combinedSeats = [...new Set([...existingUserEntry.seats, ...SelectedSeatIds])];
+        updatedShowtime = await Showtime.findOneAndUpdate(
+          { _id: showtimeId, "bookedSeats.user": userId },
+          { $set: { "bookedSeats.$.seats": combinedSeats } },
+          { new: true }
+        );
+      } else {
+        updatedShowtime = await Showtime.findOneAndUpdate(
+          { _id: showtimeId },
+          { $push: { bookedSeats: { user: userId, seats: SelectedSeatIds } } },
+          { new: true }
+        );
+      }
+
+      res.status(StatusCodes.OK).json({ message: "Seats temporarily held.", updatedShowtime });
+    } catch (error) {
+      next(error)
     }
-
-    const existingUserEntry = showtime.bookedSeats.find(entry => entry.user === userId);
-    
-    let updatedShowtime;
-    if (existingUserEntry) {
-      const combinedSeats = [...new Set([...existingUserEntry.seats, ...SelectedSeatIds])];
-      updatedShowtime = await Showtime.findOneAndUpdate(
-        { _id: showtimeId, "bookedSeats.user": userId },
-        { $set: { "bookedSeats.$.seats": combinedSeats } },
-        { new: true }
-      );
-    } else {
-      updatedShowtime = await Showtime.findOneAndUpdate(
-        { _id: showtimeId },
-        { $push: { bookedSeats: { user: userId, seats: SelectedSeatIds } } },
-        { new: true }
-      );
-    }
-
-    const cacheKey = `seats:${showtimeId}`;
-    await redis.del(cacheKey);
-
-    res.status(StatusCodes.OK).json({ message: "Seats temporarily held.", updatedShowtime });
-  } catch (error) {
-    next(error)
-  }
-};
-
+  };
 
 const email = async (req,res,next) => {
   const {user,data1} = req.body;
@@ -109,8 +92,7 @@ const email = async (req,res,next) => {
       } catch (error) {
         next(error)
       }
-
-}
+};
 
 const bookedSeats = async (req, res, next) => {
   try {
@@ -125,17 +107,14 @@ const bookedSeats = async (req, res, next) => {
     const seatsId = await Seats.find({_id: seatInfo.seats});
     
     const user = await User.findOne({_id:userId});
-
+    
     const movieData = await movie.findOne({_id:showtime.movie});
-
+    
     res.status(StatusCodes.OK).json({seatsId,user,movieData,showtime});
   }catch(error){
     next(error);
   }
-}
-
-
-
+};
 
 
 module.exports = {

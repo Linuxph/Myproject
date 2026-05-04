@@ -142,7 +142,7 @@ useEffect(() => {
                 <Star className="w-4 h-4 text-yellow-500 mr-1" />
                 {movies[currentSlide]?.rating}
               </span>
-              <span>{movies[currentSlide]?.release_date.split("T")[0]}</span>
+              <span>{movies[currentSlide]?.release_date?.split("T")[0]}</span>
               <span>{movies[currentSlide]?.duration}</span>
             </div>
             <p className="text-lg text-gray-300 leading-relaxed">{movies[currentSlide]?.description}</p>

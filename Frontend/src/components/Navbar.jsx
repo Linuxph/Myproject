@@ -1,5 +1,6 @@
 import React, {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Img from "/LOGO.png";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,7 @@ import { Card, CardContent } from "../../ui/Card"
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('usertoken');
   const logoutHandler = async () => {
     try {
       localStorage.clear();
@@ -57,7 +59,7 @@ const [searchQuery, setSearchQuery] = useState("")
                   className="pl-10 bg-gray-900 border-gray-700 text-black placeholder-gray-400 w-64"
                 />
               </div>
-              <Link to="/auth">
+              <Link to={isAuthenticated ? "/profile" : "/auth"}>
                 <Button variant="ghost" size="icon">
                   <User className="w-5 h-5" />
                 </Button>
