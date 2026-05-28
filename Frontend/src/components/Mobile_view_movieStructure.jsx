@@ -22,7 +22,7 @@ const Mobile_view_movieStructure = ({ movies }) => {
                   <div
                     key={index}
                     onClick={() => clickHandler(item._id)}
-                    className={`min-w-[325px] h-[200px] bg-gray-800 rounded-lg flex items-center justify-center text-white text-center p-2 shadow-md `}
+                    className={`min-w-[300px] h-[200px] bg-gray-800 rounded-lg flex items-center justify-center text-white text-center p-2 shadow-md `}
                     style={{
                         backgroundImage: `url('${item.ImageURL}')`,
                       backgroundPosition: "top",
@@ -48,7 +48,7 @@ const Mobile_view_movieStructure = ({ movies }) => {
                         key={index}
                     >
                   <div
-                    className={` h-[150px] w-[150px] rounded-xl`}
+                    className={` h-[150px] min-w-[225px] w-[225px] rounded-xl`}
                     onClick={() => clickHandler(movie._id)}
                     style={{
                       backgroundImage: `url('${movie.ImageURL}')`,
@@ -75,7 +75,7 @@ const Mobile_view_movieStructure = ({ movies }) => {
                         key={index}
                     >
                   <div
-                    className={` h-[150px] w-[150px] rounded-xl`}
+                    className={` h-[150px] min-w-[225px] w-[225px] rounded-xl`}
                     onClick={() => clickHandler(movie._id)}
                     style={{
                       backgroundImage: `url('${movie.ImageURL}')`,

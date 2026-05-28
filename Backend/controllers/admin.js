@@ -4,39 +4,42 @@ const Showtime = require("../model/showtime");
 const fs = require('fs')
 const path = require('path');
 const {uploadImage,DeleteImage} = require('../utils/cloudinary');
-const sizeOf = require('image-size');
+const { imageSize: sizeOf } = require('image-size');
 
 
 const uploadAsAdmin = async (req, res, next) => {
-  const { title, duration, description, release_date, rating,  genre} = req.body;
+  const { title, duration, description, release_date, rating, genre } = req.body;
+  const ImagePath = req.file ? path.resolve(__dirname, `../uploads/${req.file.originalname}`) : null;
   
   try {
-    const alreadyExists = await Movies.findOne({title:title});
+    const alreadyExists = await Movies.findOne({ title: title });
     
-    if(!alreadyExists){
+    if (!alreadyExists) {
+      if (!ImagePath || !fs.existsSync(ImagePath)) {
+         return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Image is required" });
+      }
 
       // Validate image dimensions
-      const ImagePath = path.resolve(__dirname,`../uploads/${req.file.originalname}`);
       const dimensions = sizeOf(fs.readFileSync(ImagePath));
       
-      // Normal poster size constraints: aspect ratio ~2:3 (width:height)
-      // Minimum: 500x750, Maximum: 4000x6000
-      const minWidth = 500;
-      const minHeight = 750;
-      const maxWidth = 4000;
-      const maxHeight = 6000;
+      // Normal poster size constraints: aspect ratio ~3:2 (width:height)
+      // Minimum: 300x200, Maximum: 4500x3000
+      const minWidth = 300;
+      const minHeight = 200;
+      const maxWidth = 4500;
+      const maxHeight = 3000;
       const aspectRatio = dimensions.width / dimensions.height;
-      const expectedAspectRatio = 2 / 3; 
+      const expectedAspectRatio = 3 / 2; 
 
       if (dimensions.width < minWidth || dimensions.height < minHeight) {
-        fs.unlinkSync(ImagePath); 
+        if (fs.existsSync(ImagePath)) fs.unlinkSync(ImagePath); 
         return res.status(StatusCodes.BAD_REQUEST).json({ 
           msg: `Image too small. Minimum size is ${minWidth}x${minHeight} pixels.` 
         });
       }
 
       if (dimensions.width > maxWidth || dimensions.height > maxHeight) {
-        fs.unlinkSync(ImagePath); // Delete the uploaded file
+        if (fs.existsSync(ImagePath)) fs.unlinkSync(ImagePath); // Delete the uploaded file
         return res.status(StatusCodes.BAD_REQUEST).json({ 
           msg: `Image too large. Maximum size is ${maxWidth}x${maxHeight} pixels.` 
         });
@@ -44,34 +47,35 @@ const uploadAsAdmin = async (req, res, next) => {
 
       // Check aspect ratio (allow 15% tolerance)
       if (Math.abs(aspectRatio - expectedAspectRatio) > 0.15) {
-        fs.unlinkSync(ImagePath); // Delete the uploaded file
+        if (fs.existsSync(ImagePath)) fs.unlinkSync(ImagePath); // Delete the uploaded file
         return res.status(StatusCodes.BAD_REQUEST).json({ 
-          msg: `Invalid poster aspect ratio. Expected approximately 2:3 (e.g., 500x750, 1000x1500).` 
+          msg: `Invalid poster aspect ratio. Expected approximately 3:2 (e.g., 3000x2000).` 
         });
       }
 
-      const imageURL = await uploadImage(ImagePath,req.file.originalname);
-
+      const imageURL = await uploadImage(ImagePath, req.file.originalname);
 
       await Movies.create({
           title: title,
           Duration: duration,
           description: description,
           release_date: release_date,
-          rating:rating,
+          rating: rating,
           genre: genre,
           ImageURL: imageURL.secure_url
       });
   
-  
-      res
-        .status(StatusCodes.OK)
-        .json({ msg: "The movie has been added successfully" });
+      res.status(StatusCodes.OK).json({ msg: "The movie has been added successfully" });
+    } else {
+      if (ImagePath && fs.existsSync(ImagePath)) {
+        fs.unlinkSync(ImagePath);
       }
-      else{
-        res.status(StatusCodes.BAD_REQUEST).json({msg:"The movie already exists"}); 
-      }
+      res.status(StatusCodes.BAD_REQUEST).json({ msg: "The movie already exists" }); 
+    }
   } catch (error) {
+    if (ImagePath && fs.existsSync(ImagePath)) {
+      fs.unlinkSync(ImagePath);
+    }
     next(error);
   }
 };

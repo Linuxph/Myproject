@@ -134,9 +134,9 @@ export default function MoviePage() {
                 <img
                   src={movieData?.ImageURL || "/placeholder.svg"}
                   alt={movieData?.title}
-                  width={400}
-                  height={600}
-                  className="rounded-lg shadow-2xl"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-2xl aspect-[3/2] object-cover w-full"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg" />
               </div>
@@ -153,48 +153,58 @@ export default function MoviePage() {
             <p className="text-gray-400">Select your preferred showtime and theater</p>
           </div>
 
-          <div className="grid gap-6">
-            {dataShowtimes.map((showtime, index) => (
-              <Card
-                key={index}
-                className={`bg-gray-900 border-gray-800 hover:bg-gray-800 transition-all duration-300 cursor-pointer ${
-                  selectedShowtime === index ? "ring-2 ring-red-600 bg-gray-800" : ""
-                }`}
-                onClick={() => setSelectedShowtime(index)}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-6">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-red-500">{showtime.time}</div>
-                        <div className="text-sm text-gray-400">Today</div>
-                      </div>
-                      <Separator orientation="vertical" className="h-12 bg-gray-700" />
-                      <div>
-                        <div className="flex items-center text-white mb-1">
-                          <MapPin className="w-4 h-4 mr-2 text-gray-400" />
-                          {showtime.theater}
+          {dataShowtimes.length > 0 ? (
+            <>
+              <div className="grid gap-6">
+                {dataShowtimes.map((showtime, index) => (
+                  <Card
+                    key={index}
+                    className={`bg-gray-900 border-gray-800 hover:bg-gray-800 transition-all duration-300 cursor-pointer ${
+                      selectedShowtime === index ? "ring-2 ring-red-600 bg-gray-800" : ""
+                    }`}
+                    onClick={() => setSelectedShowtime(index)}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-6">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-red-500">{showtime.time}</div>
+                            <div className="text-sm text-gray-400">Today</div>
+                          </div>
+                          <Separator orientation="vertical" className="h-12 bg-gray-700" />
+                          <div>
+                            <div className="flex items-center text-white mb-1">
+                              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+                              {showtime.theater}
+                            </div>
+                            <div className="text-sm text-gray-400">Screen 1 • Dolby Atmos</div>
+                          </div>
                         </div>
-                        <div className="text-sm text-gray-400">Screen 1 • Dolby Atmos</div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-white">₹{showtime.price}</div>
+                          <div className="text-sm text-gray-400">per ticket</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-white">₹{showtime.price}</div>
-                      <div className="text-sm text-gray-400">per ticket</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-          {selectedShowtime !== null && (
-            <div className="mt-8 text-center">
-              {/* <Link to={`/booking/${dataShowtimes[selectedShowtime]._id}`}> */}
-                <Button onClick={handleClick} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-12">
-                  Select Seats
-                </Button>
-              {/* </Link> */}
+              {selectedShowtime !== null && (
+                <div className="mt-8 text-center">
+                  <Button onClick={handleClick} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-12">
+                    Select Seats
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800">
+              <h3 className="text-2xl font-bold text-white mb-3">Currently no plans to watch</h3>
+              <p className="text-gray-400 mb-6">There are no showtimes available for this movie right now.</p>
+              <Button onClick={() => window.location.href = '/'} size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
+                Back to Home Page
+              </Button>
             </div>
           )}
         </div>

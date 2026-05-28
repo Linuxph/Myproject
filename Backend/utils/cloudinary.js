@@ -9,18 +9,21 @@ v2.config({
 
 const uploadImage = async (localPath, name) => {
     try {
-        
         const uploadResult = await v2.uploader.upload(localPath, {
             public_id: name,
             resource_type: "auto"
         });
-        // console.log('Upload result:', uploadResult);
-        fs.unlinkSync(localPath);
+        
+        if (fs.existsSync(localPath)) {
+            fs.unlinkSync(localPath);
+        }
         return uploadResult;
     } catch (error) {
         console.error('Upload error:', error);
-        if (fs.existsSync(localPath)) fs.unlinkSync(localPath);
-        
+        if (fs.existsSync(localPath)) {
+            fs.unlinkSync(localPath);
+        }
+        throw new Error('Image upload failed');
     }
 };
 

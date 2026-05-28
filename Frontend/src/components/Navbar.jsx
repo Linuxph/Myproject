@@ -36,17 +36,6 @@ const [searchQuery, setSearchQuery] = useState("")
               <Link href="/" className="text-2xl font-bold text-red-600">
                 MOVIEtIME
               </Link>
-              <nav className="hidden md:flex space-x-6">
-                <Link href="/" className="hover:text-red-500 transition-colors">
-                  Home
-                </Link>
-                <Link href="/movies" className="hover:text-red-500 transition-colors">
-                  Movies
-                </Link>
-                {/* <Link href="/theaters" className="hover:text-red-500 transition-colors">
-                  Theaters
-                </Link> */}
-              </nav>
             </div>
 
             <div className="flex items-center space-x-4">

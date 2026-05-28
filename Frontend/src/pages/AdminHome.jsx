@@ -62,7 +62,17 @@ const AdminHome = () => {
         body: fd,
       });
       const data = await res.json();
-      data.msg?.includes("successfully") ? toast.success(data.msg) : toast.error(data.msg);
+      if (res.ok || data.msg?.includes("successfully")) {
+        toast.success(data.msg);
+        setformData({
+          title: "", description: "", rating: 0,
+          release_date: "", ImageURL: "", duration: "", genre: "",
+        });
+        setSelectedFile(null);
+        e.target.reset(); // Clears the file input field in the UI
+      } else {
+        toast.error(data.msg);
+      }
     } catch (error) {
       toast.error("Failed to add movie.");
     }
@@ -80,7 +90,15 @@ const AdminHome = () => {
         body: JSON.stringify(showtime),
       });
       const data = await res.json();
-      data.msg?.includes("successfully") ? toast.success(data.msg) : toast.error(data.msg);
+      if (res.ok || data.msg?.includes("successfully")) {
+        toast.success(data.msg);
+        setshowtime({
+          movieId: "", startTime: "", endTime: "", price: 0, date: "",
+        });
+        e.target.reset();
+      } else {
+        toast.error(data.msg);
+      }
     } catch {
       toast.error("Failed to add showtime.");
     }
@@ -102,9 +120,13 @@ const AdminHome = () => {
         return toast.error(err.msg || "Something went wrong!");
       }
       const data = await res.json();
-      data.data?.deletedCount === 0
-        ? toast.error("Movie not found. Please enter a valid title.")
-        : toast.success(data.msg || "Movie removed successfully.");
+      if (data.data?.deletedCount === 0) {
+        toast.error("Movie not found. Please enter a valid title.");
+      } else {
+        toast.success(data.msg || "Movie removed successfully.");
+        setremove("");
+        e.target.reset();
+      }
     } catch (error) {
       toast.error(error.message || "An unexpected error occurred.");
     }
@@ -126,6 +148,8 @@ const AdminHome = () => {
         toast.error("Showtime not found. Please enter a valid movie title.");
       } else {
         toast.success(data.msg);
+        setshowremove("");
+        e.target.reset();
       }
     } catch {
       toast.error("Failed to delete showtime.");
